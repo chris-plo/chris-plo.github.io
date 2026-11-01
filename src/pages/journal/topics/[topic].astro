@@ -1,0 +1,53 @@
+---
+import { getCollection } from "astro:content";
+import BaseLayout from "../../../layouts/BaseLayout.astro";
+import { getJournalTopicLabel } from "../../../data/journalTopics";
+
+export async function getStaticPaths() {
+  const entries = (await getCollection("journal", ({ data }) => !data.draft))
+    .sort((a, b) => b.data.published.valueOf() - a.data.published.valueOf());
+  const topics = new Map<string, typeof entries>();
+
+  entries.forEach((entry) => {
+    entry.data.tags.forEach((topic) => {
+      topics.set(topic, [...(topics.get(topic) ?? []), entry]);
+    });
+  });
+
+  return [...topics].map(([topic, topicEntries]) => ({
+    params: { topic },
+    props: { topic, entries: topicEntries }
+  }));
+}
+
+const { topic, entries } = Astro.props;
+const topicLabel = getJournalTopicLabel(topic);
+---
+<BaseLayout
+  title={`${topicLabel} articles — Christoph Plössl`}
+  description={`Journal entries by Christoph Plössl about ${topicLabel.toLowerCase()}.`}
+>
+  <section class="page-heading">
+    <a class="eyebrow back-link" href="/journal">← Journal</a>
+    <h1>{topicLabel}</h1>
+    <p class="lede">Journal entries filed under {topicLabel.toLowerCase()}.</p>
+  </section>
+  <div class="post-list">
+    {entries.map((entry) => (
+      <article class="post">
+        <time datetime={entry.data.published.toISOString()}>
+          {entry.data.published.toLocaleDateString("en", {
+            year: "numeric",
+            month: "long",
+            day: "numeric",
+            timeZone: "UTC"
+          })}
+        </time>
+        <div>
+          <h2><a href={`/journal/${entry.id}/`}>{entry.data.title}</a></h2>
+          <p>{entry.data.description}</p>
+        </div>
+      </article>
+    ))}
+  </div>
+</BaseLayout>

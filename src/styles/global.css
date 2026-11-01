@@ -140,6 +140,10 @@ main { min-height: 65vh; }
 .article-content blockquote { margin: 28px 0; padding-left: 22px; border-left: 2px solid var(--accent); }
 .article-content img { display: block; max-width: 100%; height: auto; }
 .article-content :focus-visible { outline: 2px solid var(--accent); outline-offset: 4px; }
+.article-cover { display: block; width: 100%; max-height: 620px; margin: 0 0 42px; object-fit: cover; }
+.topic-list { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 18px; }
+.topic-list a { padding: 6px 10px; border: 1px solid var(--line); color: var(--muted); font-size: 12px; line-height: 1; }
+.topic-list a:hover { border-color: var(--accent); color: var(--accent); }
 .personal-gallery { margin: 0 0 62px; }
 .personal-gallery h2, .personal-note h2 { font: 500 32px/1.1 var(--serif); }
 .photo-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 18px; }

@@ -34,6 +34,10 @@ Write the article in Markdown here.
 
 Set `draft` to `false` when the article is ready to publish. Drafts are excluded from both the journal index and the static build.
 
+## Personal photos
+
+Add personal photos under `src/assets/personal/` as JPG, PNG, WebP or AVIF files. Each filename is used as the image's alternative text, so use a short descriptive name such as `cats-on-the-sofa.jpg`.
+
 ## GitHub Pages
 
 `.github/workflows/deploy.yml` builds and publishes on pushes to `main`. Pull requests and pushes to `redesign` do not deploy. Review and merge the redesign separately when it is ready to go live. The workflow expects GitHub Pages to already use **GitHub Actions** as its source; this change does not alter repository settings or DNS.

@@ -1,0 +1,45 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+
+const photoFiles = import.meta.glob<string>("../assets/personal/*.{avif,jpg,jpeg,png,webp}", {
+  eager: true,
+  query: "?url",
+  import: "default"
+});
+const photos = Object.entries(photoFiles)
+  .sort(([a], [b]) => a.localeCompare(b))
+  .map(([path, src]) => ({
+    src,
+    alt: path.split("/").at(-1)?.replace(/\.[^.]+$/, "").replace(/[-_]+/g, " ") ?? "Personal photograph"
+  }));
+---
+<BaseLayout title="Personal — Chris Plössl" description="A few personal notes, family moments and photographs from Chris Plössl's life beyond software.">
+  <section class="page-heading">
+    <span class="eyebrow">Personal</span>
+    <h1>Life beyond the day job.</h1>
+    <p class="lede">A few things that make a life outside software: family, two cats and everyday moments worth keeping.</p>
+  </section>
+
+  <section class="personal-gallery" aria-labelledby="moments-heading">
+    <h2 id="moments-heading">A few moments</h2>
+    {photos.length ? (
+      <div class="photo-grid">
+        {photos.map((photo) => <figure><img src={photo.src} alt={photo.alt} loading="lazy" decoding="async" /></figure>)}
+      </div>
+    ) : (
+      <p class="photo-empty">Personal photographs will appear here as I add them.</p>
+    )}
+  </section>
+
+  <section class="personal-note" aria-labelledby="cats-heading">
+    <span class="eyebrow">At home</span>
+    <h2 id="cats-heading">The cats</h2>
+    <p>Two cats share our home and make sure life has its own rhythm, well beyond the hours spent at a screen.</p>
+  </section>
+
+  <section class="personal-note" aria-labelledby="thanks-heading">
+    <span class="eyebrow">With love</span>
+    <h2 id="thanks-heading">A note for my wife</h2>
+    <p class="wife-thanks">Thank you for sharing this life with me. I’m grateful for you, every day.</p>
+  </section>
+</BaseLayout>

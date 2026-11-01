@@ -25,16 +25,17 @@ a:focus-visible { outline: 2px solid var(--accent); outline-offset: 5px; border-
 .wordmark span { color: var(--accent); }
 .header-right { display: flex; align-items: center; gap: clamp(22px, 4vw, 52px); }
 .site-header nav { display: flex; gap: clamp(18px, 3vw, 38px); }
-.site-header nav a, .header-contact { font-size: 13px; color: var(--muted); }
+.site-header nav a, .connect-links a { font-size: 13px; color: var(--muted); }
 .site-header nav a.active { color: var(--ink); text-decoration: underline; text-decoration-color: var(--accent); text-underline-offset: 7px; }
-.header-contact { color: var(--ink); }
-.header-contact span { color: var(--accent); margin-left: 5px; }
+.connect-links { display: flex; gap: 15px; white-space: nowrap; }
+.connect-links span { color: var(--accent); margin-left: 3px; }
 main { min-height: 65vh; }
 .eyebrow { color: var(--accent); font: 11px var(--mono); letter-spacing: .12em; text-transform: uppercase; }
-.hero { display: grid; grid-template-columns: 1.35fr .65fr; gap: 70px; padding: 100px 0 94px; align-items: end; }
+.hero { display: grid; grid-template-columns: minmax(0, 1fr); padding: 100px 0 94px; align-items: end; }
 .hero h1 { max-width: 760px; margin: 22px 0 25px; font: 500 clamp(56px, 8vw, 104px)/.98 var(--serif); letter-spacing: -.055em; }
 .hero h1 em { color: var(--accent); font-weight: 400; }
 .lede { max-width: 580px; color: var(--muted); font-size: 18px; line-height: 1.7; }
+.hero-actions { display: flex; flex-wrap: wrap; gap: 10px 28px; }
 .hero-aside { border-left: 1px solid var(--line); padding: 8px 0 8px 28px; color: var(--muted); font-size: 14px; line-height: 1.8; }
 .hero-aside strong { display: block; color: var(--ink); font-weight: 600; margin-bottom: 8px; }
 .text-link { display: inline-flex; gap: 9px; align-items: center; margin-top: 20px; font-size: 13px; border-bottom: 1px solid var(--ink); padding-bottom: 5px; }
@@ -91,17 +92,27 @@ main { min-height: 65vh; }
 .article-content blockquote { margin: 28px 0; padding-left: 22px; border-left: 2px solid var(--accent); }
 .article-content img { display: block; max-width: 100%; height: auto; }
 .article-content :focus-visible { outline: 2px solid var(--accent); outline-offset: 4px; }
+.personal-gallery { margin: 0 0 62px; }
+.personal-gallery h2, .personal-note h2 { font: 500 32px/1.1 var(--serif); }
+.photo-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 18px; }
+.photo-grid figure { margin: 0; }
+.photo-grid img { display: block; width: 100%; aspect-ratio: 4 / 3; object-fit: cover; background: var(--paper-deep); }
+.photo-empty { padding: 30px; background: var(--paper-deep); color: var(--muted); line-height: 1.7; }
+.personal-note { max-width: 760px; padding: 28px 0 72px; border-top: 1px solid var(--line); }
+.personal-note p { color: var(--muted); font-size: 16px; line-height: 1.8; }
+.wife-thanks { padding-left: 22px; border-left: 2px solid var(--accent); font: italic 24px/1.5 var(--serif) !important; color: var(--ink) !important; }
 .status-line { display: flex; align-items: center; gap: 12px; color: var(--muted); font-size: 13px; margin: 25px 0; }
 .status-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--accent); }
 .site-footer { display: flex; justify-content: space-between; align-items: center; gap: 24px; border-top: 1px solid var(--line); padding: 28px 0 36px; color: var(--muted); font-size: 12px; }
-.site-footer div { display: flex; gap: 22px; }
+.site-footer nav { display: flex; gap: 22px; }
 .site-footer a { color: var(--ink); }
 @media (max-width: 760px) {
   .site-shell { width: min(100% - 36px, 600px); }
   .site-header { min-height: 76px; flex-wrap: wrap; gap: 12px; padding: 15px 0; }
   .site-header nav { order: 3; width: 100%; justify-content: space-between; gap: 8px; }
   .site-header nav a { font-size: 12px; }
-  .header-contact { font-size: 12px; }
+  .connect-links { margin-left: auto; gap: 12px; }
+  .connect-links a { font-size: 11px; }
   .header-right { display: contents; }
   .hero { grid-template-columns: 1fr; gap: 32px; padding: 70px 0 65px; }
   .hero-aside { border-left: 0; border-top: 1px solid var(--line); padding: 20px 0 0; }

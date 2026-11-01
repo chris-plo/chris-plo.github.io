@@ -3,7 +3,8 @@ const links = [
   { href: "/", label: "Home" },
   { href: "/#about", label: "About" },
   { href: "/#engineering", label: "Engineering" },
-  { href: "/journal", label: "Journal" }
+  { href: "/journal", label: "Journal" },
+  { href: "/personal", label: "Personal" }
 ];
 const path = Astro.url.pathname.replace(/\/$/, "") || "/";
 ---
@@ -16,6 +17,9 @@ const path = Astro.url.pathname.replace(/\/$/, "") || "/";
         return <a href={link.href} class:list={{ active: isCurrentPage }} aria-current={isCurrentPage ? "page" : undefined}>{link.label}</a>;
       })}
     </nav>
-    <a class="header-contact" href="https://github.com/chris-plo" target="_blank" rel="noreferrer">GitHub <span aria-hidden="true">↗</span></a>
+    <div class="connect-links" aria-label="Connect">
+      <a href="https://www.linkedin.com/in/christoph-pl" target="_blank" rel="noreferrer">LinkedIn <span aria-hidden="true">↗</span></a>
+      <a href="mailto:christoph.ploessl@gmail.com">Email <span aria-hidden="true">↗</span></a>
+    </div>
   </div>
 </header>

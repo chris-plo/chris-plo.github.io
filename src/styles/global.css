@@ -52,8 +52,11 @@ main { min-height: 65vh; }
 .feature-band h2 { margin: 10px 0; font: 500 42px/1.05 var(--serif); letter-spacing: -.03em; }
 .feature-band p { max-width: 540px; color: var(--muted); line-height: 1.8; }
 .home-copy { max-width: 760px; }
+.home-copy h3 { margin: 34px 0 10px; font: 500 27px/1.15 var(--serif); }
+.home-copy h3:first-child { margin-top: 0; }
 .home-copy p, .focus-list, .current-list { color: var(--muted); font-size: 16px; line-height: 1.8; }
 .home-copy p { margin: 0 0 16px; }
+.engineering-copy { margin: 36px 0 8px; }
 .focus-list, .current-list { padding-left: 20px; }
 .focus-list li, .current-list li { padding-left: 6px; margin: 0 0 8px; }
 .current-section .section-heading { margin-bottom: 22px; }

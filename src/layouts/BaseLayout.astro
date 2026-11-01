@@ -2,6 +2,7 @@
 import Header from "../components/Header.astro";
 import Footer from "../components/Footer.astro";
 import "../styles/global.css";
+import thumbhashDecoder from "../data/thumbhash-decoder.js?raw";
 
 const {
   title = "Chris Plössl — Engineering, ideas & life beyond code",
@@ -28,6 +29,79 @@ const canonical = new URL(Astro.url.pathname, Astro.site);
     <meta property="og:description" content={description} />
     <meta property="og:url" content={canonical} />
     <title>{title}</title>
+    <script is:inline set:html={`${thumbhashDecoder}
+      const thumbhashSelector = "img[data-thumbhash][data-src]";
+      const thumbhashToExactRatioDataURL = (hash, width, height) => {
+        const decoded = ThumbHash.thumbHashToRGBA(hash);
+        const source = document.createElement("canvas");
+        source.width = decoded.w;
+        source.height = decoded.h;
+        source
+          .getContext("2d")
+          .putImageData(new ImageData(new Uint8ClampedArray(decoded.rgba), decoded.w, decoded.h), 0, 0);
+
+        const preview = document.createElement("canvas");
+        if (width >= height) {
+          preview.width = 32;
+          preview.height = Math.max(1, Math.round((32 * height) / width));
+        } else {
+          preview.height = 32;
+          preview.width = Math.max(1, Math.round((32 * width) / height));
+        }
+
+        const context = preview.getContext("2d");
+        context.imageSmoothingEnabled = true;
+        context.drawImage(source, 0, 0, preview.width, preview.height);
+        return preview.toDataURL();
+      };
+
+      const initializeThumbhashImage = (image) => {
+        if (image.dataset.thumbhashInitialized) return;
+        image.dataset.thumbhashInitialized = "true";
+
+        const hash = Uint8Array.from(atob(image.dataset.thumbhash), (character) => character.charCodeAt(0));
+        image.src = thumbhashToExactRatioDataURL(
+          hash,
+          Number(image.getAttribute("width")),
+          Number(image.getAttribute("height"))
+        );
+
+        const fullImage = new Image();
+        [...image.classList]
+          .filter((className) => className !== "thumbhash-preview")
+          .forEach((className) => fullImage.classList.add(className));
+        fullImage.classList.add("thumbhash-full");
+        fullImage.alt = "";
+        fullImage.setAttribute("aria-hidden", "true");
+        fullImage.decoding = "async";
+        fullImage.width = Number(image.getAttribute("width"));
+        fullImage.height = Number(image.getAttribute("height"));
+        fullImage.onload = async () => {
+          try {
+            await fullImage.decode();
+          } catch {}
+
+          image.insertAdjacentElement("afterend", fullImage);
+          requestAnimationFrame(() => {
+            requestAnimationFrame(() => {
+              fullImage.classList.add("is-loaded");
+              image.classList.add("is-replaced");
+            });
+          });
+        };
+        fullImage.src = image.dataset.src;
+      };
+
+      const initializeThumbhashImages = (node) => {
+        if (node.nodeType !== Node.ELEMENT_NODE) return;
+        if (node.matches(thumbhashSelector)) initializeThumbhashImage(node);
+        node.querySelectorAll(thumbhashSelector).forEach(initializeThumbhashImage);
+      };
+
+      new MutationObserver((mutations) => {
+        mutations.forEach(({ addedNodes }) => addedNodes.forEach(initializeThumbhashImages));
+      }).observe(document.documentElement, { childList: true, subtree: true });
+    `}></script>
   </head>
   <body>
     <div class="site-shell">

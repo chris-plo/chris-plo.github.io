@@ -20,6 +20,16 @@ a:focus-visible { outline: 2px solid var(--accent); outline-offset: 5px; border-
 .skip-link { position: absolute; z-index: 5; top: 8px; left: 8px; padding: 10px 14px; background: var(--ink); color: var(--paper); transform: translateY(-160%); }
 .skip-link:focus { transform: translateY(0); color: var(--paper); }
 .site-shell { width: min(1160px, calc(100% - 64px)); margin: 0 auto; }
+.thumbhash-frame { position: relative; width: 100%; aspect-ratio: var(--thumbhash-aspect-ratio); overflow: hidden; }
+.thumbhash-frame.thumbhash-frame img { display: block; width: 100%; height: 100%; }
+.thumbhash-preview { transition: opacity 420ms ease; }
+.thumbhash-preview.is-replaced { opacity: 0; }
+.thumbhash-frame .thumbhash-full { position: absolute; inset: 0; opacity: 0; transition: opacity 420ms ease; }
+.thumbhash-frame .thumbhash-full.is-loaded { opacity: 1; }
+@media (prefers-reduced-motion: reduce) {
+  .thumbhash-preview,
+  .thumbhash-frame .thumbhash-full { transition: none; }
+}
 .site-header { min-height: 88px; display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid var(--line); }
 .wordmark { font-family: var(--serif); font-size: 31px; font-weight: 500; letter-spacing: -2px; }
 .wordmark span { color: var(--accent); }

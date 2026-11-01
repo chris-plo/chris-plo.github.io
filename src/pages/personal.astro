@@ -10,7 +10,17 @@ const photos = Object.entries(photoFiles)
   .sort(([a], [b]) => a.localeCompare(b))
   .map(([path, src]) => ({
     src,
-    alt: path.split("/").at(-1)?.replace(/\.[^.]+$/, "").replace(/[-_]+/g, " ") ?? "Personal photograph"
+    alt: (path.split("/").at(-1)?.replace(/\.[^.]+$/, "") ?? "")
+      .replace(/^two-cats-at-home$/, "Two cats relaxing at home")
+      .replace(/^chris-by-a-mosaic-wall$/, "Chris beside a tiled mosaic wall")
+      .replace(/^chris-by-an-arched-door$/, "Chris beside an arched wooden door")
+      .replace(/^black-cat-in-the-chair$/, "A black cat settled into a chair")
+      .replace(/^cat-at-the-desk$/, "A cat keeping watch from the desk")
+      .replace(/^a-day-out-together$/, "Chris and his wife out together")
+      .replace(/^a-colourful-day-out$/, "Chris enjoying a colourful day out")
+      .replace(/^a-birthday-gathering$/, "A birthday gathering with cake")
+      .replace(/^beside-the-flower-wall$/, "Chris beside a wall of flowers")
+      .replace(/^cat-by-the-window$/, "A cat looking out of the window")
   }));
 ---
 <BaseLayout title="Personal — Chris Plössl" description="A few personal notes, family moments and photographs from Chris Plössl's life beyond software.">
@@ -24,7 +34,7 @@ const photos = Object.entries(photoFiles)
     <h2 id="moments-heading">A few moments</h2>
     {photos.length ? (
       <div class="photo-grid">
-        {photos.map((photo) => <figure><img src={photo.src} alt={photo.alt} loading="lazy" decoding="async" /></figure>)}
+        {photos.map((photo) => <figure><img src={photo.src} alt={photo.alt} loading="lazy" decoding="async" /><figcaption>{photo.alt}</figcaption></figure>)}
       </div>
     ) : (
       <p class="photo-empty">Personal photographs will appear here as I add them.</p>

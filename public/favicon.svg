@@ -1,4 +1,5 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="cp.">
+  <rect width="64" height="64" rx="14" fill="#f4f3ed" />
   <text x="4" y="49" fill="#20221f" font-family="Georgia, 'Times New Roman', serif" font-size="48" font-weight="500" letter-spacing="-5">cp</text>
-  <circle cx="57" cy="46" r="3" fill="#596b42" />
+  <circle cx="57" cy="46" r="3" fill="#a4513f" />
 </svg>

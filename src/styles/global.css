@@ -92,9 +92,11 @@ main { min-height: 65vh; }
   .header-right { display: contents; }
   .hero { grid-template-columns: 1fr; gap: 32px; padding: 70px 0 65px; }
   .hero-aside { border-left: 0; border-top: 1px solid var(--line); padding: 20px 0 0; }
-  .interest-grid { grid-template-columns: 1fr 1fr; }
-  .interest { min-height: 170px; padding: 16px; }
-  .interest h3 { margin-top: 25px; font-size: 21px; }
+  .interest-grid { grid-template-columns: 1fr; border: 0; }
+  .interest { min-height: 0; display: grid; grid-template-columns: 30px 1fr; column-gap: 12px; align-items: baseline; padding: 18px 0; border-right: 0; }
+  .interest .number { grid-row: 1 / span 2; }
+  .interest h3 { margin: 0 0 6px; font-size: 21px; }
+  .interest p { grid-column: 2; }
   .feature-band { grid-template-columns: 1fr; gap: 10px; padding: 28px; }
   .feature-band h2 { font-size: 36px; }
   .page-heading { padding: 68px 0 38px; }

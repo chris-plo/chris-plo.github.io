@@ -5,15 +5,15 @@ An editorial personal site built with Astro and deployed as a static site on Git
 ## Local development
 
 ```sh
-npm ci
-npm run dev
+pnpm install --frozen-lockfile
+pnpm dev
 ```
 
 ## Production build
 
 ```sh
-npm run build
-npm run preview
+pnpm build
+pnpm preview
 ```
 
 ## Journal entries
@@ -43,4 +43,4 @@ Set `draft` to `false` when the article is ready to publish. Drafts are excluded
 - Confirm professional wording and any chronology you want to publish.
 - Add only project details, metrics and employer information approved for public use.
 - Add a portrait, social profiles or contact links only if you want them included.
-- Refresh the Now page when its snapshot changes.
+- Refresh the “Currently thinking about” section when its snapshot changes.

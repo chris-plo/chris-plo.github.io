@@ -1,10 +1,9 @@
 ---
 const links = [
   { href: "/", label: "Home" },
-  { href: "/about", label: "About" },
-  { href: "/engineering", label: "Engineering" },
-  { href: "/journal", label: "Journal" },
-  { href: "/now", label: "Now" }
+  { href: "/#about", label: "About" },
+  { href: "/#engineering", label: "Engineering" },
+  { href: "/journal", label: "Journal" }
 ];
 const path = Astro.url.pathname.replace(/\/$/, "") || "/";
 ---
@@ -13,8 +12,8 @@ const path = Astro.url.pathname.replace(/\/$/, "") || "/";
   <div class="header-right">
     <nav aria-label="Main navigation">
       {links.map((link) => {
-        const isActive = path === link.href || (link.href !== "/" && path.startsWith(link.href));
-        return <a href={link.href} class:list={{ active: isActive }} aria-current={isActive ? "page" : undefined}>{link.label}</a>;
+        const isCurrentPage = !link.href.includes("#") && (path === link.href || (link.href !== "/" && path.startsWith(link.href)));
+        return <a href={link.href} class:list={{ active: isCurrentPage }} aria-current={isCurrentPage ? "page" : undefined}>{link.label}</a>;
       })}
     </nav>
     <a class="header-contact" href="https://github.com/chris-plo" target="_blank" rel="noreferrer">GitHub <span aria-hidden="true">↗</span></a>

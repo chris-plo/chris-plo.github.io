@@ -7,7 +7,7 @@ import BaseLayout from "../layouts/BaseLayout.astro";
       <span class="eyebrow">Software · Systems · People</span>
       <h1>Building things.<br /><em>Making sense</em> of them.</h1>
       <p class="lede">I’m Chris. I work across software engineering and technical leadership, with an interest in how complex systems—and the teams behind them—can work well.</p>
-      <a class="text-link" href="/about">A little about me <span aria-hidden="true">↗</span></a>
+      <a class="text-link" href="#about">A little about me <span aria-hidden="true">↓</span></a>
     </div>
     <aside class="hero-aside">
       <strong>Beyond the work</strong>
@@ -15,9 +15,35 @@ import BaseLayout from "../layouts/BaseLayout.astro";
     </aside>
   </section>
 
+  <section class="section" id="about" aria-labelledby="about-heading">
+    <div class="section-heading">
+      <div><span class="eyebrow">01 / About</span><h2 id="about-heading">A path through systems.</h2></div>
+      <p>From physical operations to software.</p>
+    </div>
+    <div class="home-copy">
+      <p>My professional path has crossed industrial automation, logistics and software engineering. Those fields have different tools, but all depend on understanding how parts fit together: technology, processes, constraints and people.</p>
+      <p>That systems view still shapes how I work. Code matters, and so do the conditions around it: what a system needs to do, how it will be operated, and whether the people responsible for it can understand and change it.</p>
+      <p>Alongside hands-on software work, I’m interested in technical leadership: creating shared context, making trade-offs clear and helping teams make sound decisions.</p>
+    </div>
+  </section>
+
+  <section class="section" id="engineering" aria-labelledby="engineering-heading">
+    <div class="feature-band">
+      <div><span class="eyebrow">02 / Engineering</span><h2 id="engineering-heading">Good systems make room for people.</h2></div>
+      <div>
+        <p>Engineering is technical work, but it is also a practice of making decisions together. I’m interested in the systems, constraints and habits that help teams build with clarity.</p>
+        <ul class="focus-list">
+          <li>Distributed systems that stay understandable as they grow</li>
+          <li>Search, relevance and personalisation</li>
+          <li>Technical leadership that gives teams clarity and room to act</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
   <section class="section">
     <div class="section-heading">
-      <div><span class="eyebrow">01 / A wider lens</span><h2>Work is one part of it.</h2></div>
+      <div><span class="eyebrow">03 / A wider lens</span><h2>Work is one part of it.</h2></div>
       <p>Some threads I keep coming back to.</p>
     </div>
     <div class="interest-grid">
@@ -28,16 +54,21 @@ import BaseLayout from "../layouts/BaseLayout.astro";
     </div>
   </section>
 
-  <section class="section">
-    <div class="feature-band">
-      <div><span class="eyebrow">02 / Engineering</span><h2>Good systems make room for people.</h2></div>
-      <div><p>Engineering is technical work, but it is also a practice of making decisions together. I’m interested in the systems, constraints and habits that help teams build with clarity.</p><a class="text-link" href="/engineering">Explore engineering <span aria-hidden="true">↗</span></a></div>
+  <section class="section current-section" aria-labelledby="current-heading">
+    <div class="section-heading">
+      <div><span class="eyebrow">04 / Lately</span><h2 id="current-heading">Currently thinking about.</h2></div>
+      <p>A small snapshot, rather than a live feed.</p>
     </div>
+    <ul class="current-list">
+      <li>How AI is changing software development—and what still takes care and judgment.</li>
+      <li>How complex systems can stay understandable as they grow.</li>
+      <li>Connections between ideas in science, history and philosophy.</li>
+    </ul>
   </section>
 
-  <section class="section">
+  <section class="section journal-preview">
     <div class="section-heading">
-      <div><span class="eyebrow">03 / Journal</span><h2>Notes in the making.</h2></div>
+      <div><span class="eyebrow">05 / Journal</span><h2>Notes in the making.</h2></div>
       <a class="text-link" href="/journal">Visit the journal <span aria-hidden="true">↗</span></a>
     </div>
     <p class="lede">A place for longer thoughts and useful discoveries. New pieces will appear here as they’re ready.</p>

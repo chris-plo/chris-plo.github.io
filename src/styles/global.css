@@ -39,6 +39,7 @@ main { min-height: 65vh; }
 .hero-aside strong { display: block; color: var(--ink); font-weight: 600; margin-bottom: 8px; }
 .text-link { display: inline-flex; gap: 9px; align-items: center; margin-top: 20px; font-size: 13px; border-bottom: 1px solid var(--ink); padding-bottom: 5px; }
 .section { padding: 62px 0; border-top: 1px solid var(--line); }
+.section[id] { scroll-margin-top: 24px; }
 .section-heading { display: flex; align-items: baseline; justify-content: space-between; gap: 24px; margin-bottom: 32px; }
 .section-heading h2, .page-heading h1 { margin: 0; font: 500 clamp(34px, 5vw, 54px)/1.05 var(--serif); letter-spacing: -.035em; }
 .section-heading p { color: var(--muted); font-size: 13px; }
@@ -50,6 +51,15 @@ main { min-height: 65vh; }
 .feature-band { display: grid; grid-template-columns: .8fr 1.2fr; gap: 60px; padding: 48px; background: var(--paper-deep); }
 .feature-band h2 { margin: 10px 0; font: 500 42px/1.05 var(--serif); letter-spacing: -.03em; }
 .feature-band p { max-width: 540px; color: var(--muted); line-height: 1.8; }
+.home-copy { max-width: 760px; }
+.home-copy p, .focus-list, .current-list { color: var(--muted); font-size: 16px; line-height: 1.8; }
+.home-copy p { margin: 0 0 16px; }
+.focus-list, .current-list { padding-left: 20px; }
+.focus-list li, .current-list li { padding-left: 6px; margin: 0 0 8px; }
+.current-section .section-heading { margin-bottom: 22px; }
+.current-list { display: grid; grid-template-columns: repeat(3, 1fr); gap: 26px; margin: 0 0 4px; padding: 0; list-style: none; }
+.current-list li { margin: 0; padding: 18px 0 0; border-top: 1px solid var(--line); }
+.journal-preview { padding-bottom: 82px; }
 .page-heading { padding: 90px 0 55px; max-width: 780px; }
 .page-heading h1 { font-size: clamp(48px, 7vw, 82px); margin: 18px 0; }
 .page-heading .lede { font-size: 17px; }
@@ -99,6 +109,7 @@ main { min-height: 65vh; }
   .interest p { grid-column: 2; }
   .feature-band { grid-template-columns: 1fr; gap: 10px; padding: 28px; }
   .feature-band h2 { font-size: 36px; }
+  .current-list { grid-template-columns: 1fr; gap: 14px; }
   .page-heading { padding: 68px 0 38px; }
   .work-grid { grid-template-columns: 1fr; }
   .post { grid-template-columns: 1fr; gap: 8px; }

@@ -1,0 +1,56 @@
+media:
+  input: public/images/journal
+  output: /images/journal
+  categories: [image]
+  rename: safe
+
+content:
+  - name: journal
+    label: Journal & notes
+    type: collection
+    path: src/content/journal
+    exclude:
+      - draft-template.md
+    filename:
+      template: "{published}-{title}.md"
+      field: create
+    view:
+      fields: [title, published, draft]
+      primary: title
+      sort: [published, title]
+      default:
+        sort: published
+        order: desc
+    fields:
+      - name: title
+        label: Title
+        type: string
+        required: true
+      - name: description
+        label: Short description
+        type: text
+        required: true
+      - name: published
+        label: Publish date
+        type: date
+        required: true
+        options:
+          format: yyyy-MM-dd
+      - name: draft
+        label: Keep as draft
+        type: boolean
+      - name: readingTime
+        label: Reading time (minutes)
+        type: number
+      - name: body
+        label: Article
+        type: rich-text
+        options:
+          format: markdown
+          media: false
+
+settings:
+  content:
+    merge: true
+  commit:
+    identity: user

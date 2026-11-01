@@ -1,7 +1,13 @@
 ---
 import BaseLayout from "../layouts/BaseLayout.astro";
+import { getCollection } from "astro:content";
 import workPortrait from "../assets/professional/chris-plossl-professional-portrait.jpg";
 import workPortraitTwo from "../assets/professional/chris-plossl-at-work.jpg";
+
+const latestJournalEntries = (await getCollection("journal"))
+  .filter((entry) => !entry.data.draft)
+  .sort((a, b) => b.data.published.valueOf() - a.data.published.valueOf())
+  .slice(0, 5);
 ---
 <BaseLayout>
   <section class="hero">
@@ -11,6 +17,7 @@ import workPortraitTwo from "../assets/professional/chris-plossl-at-work.jpg";
       <div class="hero-introduction">
         <figure class="hero-portrait">
           <img src={workPortraitTwo.src} width={workPortraitTwo.width} height={workPortraitTwo.height} alt="Chris Plössl in a warm-toned professional portrait." loading="eager" decoding="async" />
+          <figcaption>Christoph Ploessl, Sr. SDE at Amazon and Certified IT Business Manager</figcaption>
         </figure>
         <div>
           <p class="lede">I’m Chris, a Senior Software Development Engineer at Amazon in Madrid. I love solving problems, and software is the way I get to work on them—from physical automation to search experiences used by millions of customers.</p>
@@ -96,7 +103,6 @@ import workPortraitTwo from "../assets/professional/chris-plossl-at-work.jpg";
   <section class="section current-section" aria-labelledby="current-heading">
     <div class="section-heading">
       <div><span class="eyebrow">05 / Lately</span><h2 id="current-heading">Currently thinking about.</h2></div>
-      <p>A small snapshot, rather than a live feed.</p>
     </div>
     <ul class="current-list">
       <li>How AI is changing software development—and what still takes care and judgment.</li>
@@ -111,6 +117,19 @@ import workPortraitTwo from "../assets/professional/chris-plossl-at-work.jpg";
       <a class="text-link" href="/journal">Visit the journal <span aria-hidden="true">↗</span></a>
     </div>
     <p class="lede">I started journaling because work moves quickly, and writing gives me room to think. I’m exploring questions about technology, GenAI and life, with AI as a prompt for reflection rather than a substitute for my own thinking. When I find something useful to build or learn, I hope to share it here.</p>
+    {latestJournalEntries.length ? (
+      <div class="home-post-list">
+        {latestJournalEntries.map((entry) => <article class="home-post">
+          <time datetime={entry.data.published.toISOString()}>{entry.data.published.toLocaleDateString("en", { year: "numeric", month: "short", day: "numeric", timeZone: "UTC" })}</time>
+          <div>
+            <h3><a href={`/journal/${entry.id}/`}>{entry.data.title}</a></h3>
+            <p>{entry.data.description}</p>
+          </div>
+        </article>)}
+      </div>
+    ) : (
+      <p class="empty-state">The journal is getting started. New writing will appear here when it’s ready.</p>
+    )}
   </section>
 
   <section class="section" id="mentoring" aria-labelledby="mentoring-heading">
@@ -118,7 +137,10 @@ import workPortraitTwo from "../assets/professional/chris-plossl-at-work.jpg";
       <div><span class="eyebrow">07 / Mentoring</span><h2 id="mentoring-heading">Early in your career?</h2></div>
       <div>
         <p>I’m happy to talk with junior engineers about career direction, technical growth, or finding your footing in a world changing quickly with GenAI. I’m open to different kinds of conversations, and I’m not doing it for money.</p>
-        <a class="text-link" href="https://www.linkedin.com/in/christoph-pl" target="_blank" rel="noreferrer">Reach out on LinkedIn <span aria-hidden="true">↗</span></a>
+        <div class="contact-actions">
+          <a class="text-link" href="https://www.linkedin.com/in/christoph-pl" target="_blank" rel="noreferrer">Reach out on LinkedIn <span aria-hidden="true">↗</span></a>
+          <a class="text-link" href="mailto:christoph.ploessl@gmail.com">Send an email <span aria-hidden="true">↗</span></a>
+        </div>
       </div>
     </div>
   </section>

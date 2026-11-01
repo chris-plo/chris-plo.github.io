@@ -1,9 +1,11 @@
 ---
 import BaseLayout from "../layouts/BaseLayout.astro";
+import type { ImageMetadata } from "astro:assets";
+import ThumbHashImage from "../components/ThumbHashImage.astro";
+import { thumbhashes } from "../data/thumbhashes";
 
-const photoFiles = import.meta.glob<string>("../assets/personal/*.{avif,jpg,jpeg,png,webp}", {
+const photoFiles = import.meta.glob<{ default: ImageMetadata }>("../assets/personal/*.{avif,jpg,jpeg,png,webp}", {
   eager: true,
-  query: "?url",
   import: "default"
 });
 const captions: Record<string, { alt: string; caption: string; section?: "cats" | "wife"; catFocus?: boolean }> = {
@@ -53,9 +55,11 @@ const captions: Record<string, { alt: string; caption: string; section?: "cats" 
 const photos = Object.entries(photoFiles)
   .sort(([a], [b]) => a.localeCompare(b))
   .flatMap(([path, src]) => {
-    const name = path.split("/").at(-1)?.replace(/\.[^.]+$/, "") ?? "";
+    const filename = path.split("/").at(-1) ?? "";
+    const name = filename.replace(/\.[^.]+$/, "");
     const details = captions[name];
-    return details ? [{ src, name, ...details }] : [];
+    const thumbhash = thumbhashes[`personal/${filename}`];
+    return details && thumbhash ? [{ src, thumbhash, name, ...details }] : [];
   });
 const moments = photos.filter((photo) => !photo.section);
 const catPhotos = photos.filter((photo) => photo.section === "cats");
@@ -72,7 +76,7 @@ const wifePhoto = photos.find((photo) => photo.section === "wife");
     <h2 id="moments-heading">A few moments</h2>
     {moments.length ? (
       <div class="photo-grid">
-        {moments.map((photo) => <figure><img src={photo.src} alt={photo.alt} loading="lazy" decoding="async" /><figcaption>{photo.caption}</figcaption></figure>)}
+        {moments.map((photo) => <figure><ThumbHashImage src={photo.src} thumbhash={photo.thumbhash} alt={photo.alt} width={960} ratio="4 / 3" /><figcaption>{photo.caption}</figcaption></figure>)}
       </div>
     ) : (
       <p class="photo-empty">Personal photographs will appear here as I add them.</p>
@@ -84,7 +88,7 @@ const wifePhoto = photos.find((photo) => photo.section === "wife");
     <h2 id="cats-heading">The cats</h2>
     <p>Mus (a tiger cat) and Regina (a British Shorthair) share our home and make sure life has its own rhythm, well beyond the hours spent at a screen.</p>
     <div class="photo-grid cat-grid">
-      {catPhotos.map((photo) => <figure><img class:list={{ "cat-focus": photo.catFocus }} src={photo.src} alt={photo.alt} loading="lazy" decoding="async" /><figcaption>{photo.caption}</figcaption></figure>)}
+      {catPhotos.map((photo) => <figure><ThumbHashImage class:list={{ "cat-focus": photo.catFocus }} src={photo.src} thumbhash={photo.thumbhash} alt={photo.alt} width={960} ratio="4 / 3" /><figcaption>{photo.caption}</figcaption></figure>)}
     </div>
   </section>
 
@@ -92,6 +96,6 @@ const wifePhoto = photos.find((photo) => photo.section === "wife");
     <span class="eyebrow">With love</span>
     <h2 id="thanks-heading">A note for my wife</h2>
     <p class="wife-thanks">Thank you for sharing this life with me. I’m grateful for you, every day.</p>
-    {wifePhoto && <figure class="wife-photo"><img src={wifePhoto.src} alt={wifePhoto.alt} loading="lazy" decoding="async" /><figcaption>{wifePhoto.caption}</figcaption></figure>}
+    {wifePhoto && <figure class="wife-photo"><ThumbHashImage src={wifePhoto.src} thumbhash={wifePhoto.thumbhash} alt={wifePhoto.alt} width={1280} /><figcaption>{wifePhoto.caption}</figcaption></figure>}
   </section>
 </BaseLayout>

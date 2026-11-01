@@ -1,6 +1,8 @@
 ---
 import BaseLayout from "../layouts/BaseLayout.astro";
 import { getCollection } from "astro:content";
+import ThumbHashImage from "../components/ThumbHashImage.astro";
+import { thumbhashes } from "../data/thumbhashes";
 import workPortrait from "../assets/professional/chris-plossl-professional-portrait.jpg";
 import workPortraitTwo from "../assets/professional/chris-plossl-at-work.jpg";
 
@@ -16,7 +18,7 @@ const latestJournalEntries = (await getCollection("journal"))
       <h1>Building things.<br /><em>Making sense</em> of them.</h1>
       <div class="hero-introduction">
         <figure class="hero-portrait">
-          <img src={workPortraitTwo.src} width={workPortraitTwo.width} height={workPortraitTwo.height} alt="Chris Plössl in a warm-toned professional portrait." loading="eager" decoding="async" />
+          <ThumbHashImage src={workPortraitTwo} thumbhash={thumbhashes["professional/chris-plossl-at-work.jpg"]} alt="Chris Plössl in a warm-toned professional portrait." width={960} />
           <figcaption>Christoph Ploessl, Sr. SDE at Amazon and Certified IT Business Manager</figcaption>
         </figure>
         <div>
@@ -48,7 +50,7 @@ const latestJournalEntries = (await getCollection("journal"))
         <p>This site brings those threads together: a place to describe my professional experience in broad, public-safe terms and to share ideas as they take shape.</p>
       </div>
       <figure class="about-portrait">
-        <img src={workPortrait.src} width={workPortrait.width} height={workPortrait.height} alt="Chris Plössl in a professional portrait beside a stone column." loading="lazy" decoding="async" />
+        <ThumbHashImage src={workPortrait} thumbhash={thumbhashes["professional/chris-plossl-professional-portrait.jpg"]} alt="Chris Plössl in a professional portrait beside a stone column." width={720} />
         <figcaption>Professional software engineering, since 2013.</figcaption>
       </figure>
     </div>

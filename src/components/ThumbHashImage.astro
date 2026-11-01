@@ -1,0 +1,28 @@
+---
+import { getImage, type ImageMetadata } from "astro:assets";
+
+interface Props {
+  src: ImageMetadata;
+  thumbhash: string;
+  alt: string;
+  width: number;
+  class?: string;
+  ratio?: string;
+}
+
+const { src, thumbhash, alt, width, class: className, ratio = `${src.width} / ${src.height}` } = Astro.props;
+const image = await getImage({ src, width, format: "webp", quality: 80 });
+---
+
+<div class="thumbhash-frame" style={`--thumbhash-aspect-ratio: ${ratio}`}>
+  <img
+    class:list={["thumbhash-preview", className]}
+    src="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg'/>"
+    data-thumbhash={thumbhash}
+    data-src={image.src}
+    alt={alt}
+    width={src.width}
+    height={src.height}
+    decoding="async"
+  />
+</div>

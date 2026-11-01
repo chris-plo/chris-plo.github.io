@@ -7,8 +7,12 @@ const journal = defineCollection({
     title: z.string(),
     description: z.string(),
     published: z.coerce.date(),
+    updated: z.coerce.date().optional(),
     draft: z.boolean().default(false),
-    readingTime: z.number().int().positive().default(4)
+    readingTime: z.number().int().positive().default(4),
+    tags: z.array(z.string()).default([]),
+    cover: z.string().optional(),
+    coverAlt: z.string().optional()
   })
 });
 

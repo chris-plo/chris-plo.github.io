@@ -3,12 +3,86 @@ import Header from "../components/Header.astro";
 import Footer from "../components/Footer.astro";
 import "../styles/global.css";
 import thumbhashDecoder from "../data/thumbhash-decoder.js?raw";
+import { getImage } from "astro:assets";
+import socialImageSource from "../assets/professional/chris-plossl-at-work.jpg";
 
 const {
-  title = "Chris Plössl — Engineering, ideas & life beyond code",
-  description = "A personal site about software engineering, technical leadership, and the ideas and interests around them."
+  title = "Christoph Plössl — Senior Software Engineer at Amazon",
+  description = "The personal website of Christoph (Chris) Plössl, a Senior Software Development Engineer in Madrid writing about software engineering, systems, AI and technical leadership.",
+  type = "website",
+  publishedTime,
+  modifiedTime,
+  tags = [],
+  image,
+  imageAlt = "Portrait of Christoph Plössl"
 } = Astro.props;
 const canonical = new URL(Astro.url.pathname, Astro.site);
+const socialImage = await getImage({
+  src: socialImageSource,
+  width: 1200,
+  height: 630,
+  fit: "cover",
+  format: "jpeg",
+  quality: 82
+});
+const socialImageUrl = new URL(image ?? socialImage.src, Astro.site);
+const person = {
+  "@type": "Person",
+  "@id": "https://chrisplo.dev/#person",
+  name: "Christoph Plössl",
+  alternateName: ["Chris Plössl", "Christoph Ploessl"],
+  url: "https://chrisplo.dev/",
+  image: socialImageUrl.toString(),
+  jobTitle: "Senior Software Development Engineer",
+  worksFor: {
+    "@type": "Organization",
+    name: "Amazon"
+  },
+  homeLocation: {
+    "@type": "Place",
+    name: "Madrid, Spain"
+  },
+  sameAs: ["https://www.linkedin.com/in/christoph-pl"]
+};
+const structuredData = type === "article"
+  ? {
+      "@context": "https://schema.org",
+      "@type": "BlogPosting",
+      headline: title.replace(/ — Christoph Plössl$/, ""),
+      description,
+      url: canonical.toString(),
+      mainEntityOfPage: canonical.toString(),
+      image: socialImageUrl.toString(),
+      datePublished: publishedTime,
+      dateModified: modifiedTime ?? publishedTime,
+      keywords: tags,
+      articleSection: tags[0],
+      author: person
+    }
+  : Astro.url.pathname === "/"
+    ? {
+        "@context": "https://schema.org",
+        "@type": "ProfilePage",
+        "@id": "https://chrisplo.dev/#profile",
+        url: canonical.toString(),
+        name: title,
+        description,
+        mainEntity: person
+      }
+    : {
+        "@context": "https://schema.org",
+        "@type": "WebPage",
+        url: canonical.toString(),
+        name: title,
+        description,
+        isPartOf: {
+          "@type": "WebSite",
+          "@id": "https://chrisplo.dev/#website",
+          name: "Christoph Plössl",
+          url: "https://chrisplo.dev/"
+        },
+        author: person
+      };
 ---
 <!doctype html>
 <html lang="en">
@@ -16,19 +90,31 @@ const canonical = new URL(Astro.url.pathname, Astro.site);
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="description" content={description} />
+    <meta name="author" content="Christoph Plössl" />
+    <meta name="robots" content="index, follow, max-image-preview:large" />
     <meta name="theme-color" content="#f4f3ed" />
     <link rel="canonical" href={canonical} />
+    <link rel="me" href="https://www.linkedin.com/in/christoph-pl" />
     <link rel="sitemap" type="application/xml" href="/sitemap.xml" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <meta name="color-scheme" content="light" />
     <meta property="og:site_name" content="Chris Plössl" />
     <meta property="og:locale" content="en_US" />
-    <meta name="twitter:card" content="summary" />
-    <meta property="og:type" content="website" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta property="og:type" content={type} />
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
     <meta property="og:url" content={canonical} />
+    <meta property="og:image" content={socialImageUrl} />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content={imageAlt} />
+    <meta name="twitter:image" content={socialImageUrl} />
+    {publishedTime && <meta property="article:published_time" content={publishedTime} />}
+    {modifiedTime && <meta property="article:modified_time" content={modifiedTime} />}
+    {tags.map((tag) => <meta property="article:tag" content={tag} />)}
     <title>{title}</title>
+    <script is:inline type="application/ld+json" set:html={JSON.stringify(structuredData)}></script>
     <script is:inline set:html={`${thumbhashDecoder}
       const thumbhashSelector = "img[data-thumbhash][data-src]";
       const thumbhashToExactRatioDataURL = (hash, width, height) => {

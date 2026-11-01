@@ -1,12 +1,13 @@
 ---
 import { getCollection } from "astro:content";
 import BaseLayout from "../../layouts/BaseLayout.astro";
+import { getJournalTopicLabel } from "../../data/journalTopics";
 
 const entries = (await getCollection("journal"))
   .filter((entry) => !entry.data.draft)
   .sort((a, b) => b.data.published.valueOf() - a.data.published.valueOf());
 ---
-<BaseLayout title="Journal — Chris Plössl" description="Notes and essays on engineering, technology, science, culture and ideas.">
+<BaseLayout title="Journal — Christoph Plössl" description="Notes and essays by Christoph Plössl on software engineering, technology, AI, science, culture and ideas.">
   <section class="page-heading">
     <span class="eyebrow">Journal</span>
     <h1>Ideas are better when they travel.</h1>
@@ -16,7 +17,15 @@ const entries = (await getCollection("journal"))
     <div class="post-list">
       {entries.map((entry) => <article class="post">
         <time datetime={entry.data.published.toISOString()}>{entry.data.published.toLocaleDateString("en", { year: "numeric", month: "long", day: "numeric", timeZone: "UTC" })}</time>
-        <div><h2><a href={`/journal/${entry.id}/`}>{entry.data.title}</a></h2><p>{entry.data.description}</p></div>
+        <div>
+          <h2><a href={`/journal/${entry.id}/`}>{entry.data.title}</a></h2>
+          <p>{entry.data.description}</p>
+          {entry.data.tags.length > 0 && (
+            <nav class="topic-list" aria-label={`Topics for ${entry.data.title}`}>
+              {entry.data.tags.map((tag) => <a href={`/journal/topics/${tag}/`}>{getJournalTopicLabel(tag)}</a>)}
+            </nav>
+          )}
+        </div>
       </article>)}
     </div>
   ) : (

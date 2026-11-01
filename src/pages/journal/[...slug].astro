@@ -1,6 +1,7 @@
 ---
 import { getCollection, render } from "astro:content";
 import BaseLayout from "../../layouts/BaseLayout.astro";
+import { getJournalTopicLabel } from "../../data/journalTopics";
 
 export async function getStaticPaths() {
   const entries = await getCollection("journal", ({ data }) => !data.draft);
@@ -10,13 +11,28 @@ export async function getStaticPaths() {
 const { entry } = Astro.props;
 const { Content } = await render(entry);
 ---
-<BaseLayout title={`${entry.data.title} — Chris Plössl`} description={entry.data.description}>
+<BaseLayout
+  title={`${entry.data.title} — Christoph Plössl`}
+  description={entry.data.description}
+  type="article"
+  publishedTime={entry.data.published.toISOString()}
+  modifiedTime={(entry.data.updated ?? entry.data.published).toISOString()}
+  tags={entry.data.tags}
+  image={entry.data.cover}
+  imageAlt={entry.data.coverAlt ?? entry.data.title}
+>
   <article class="article-page">
     <header class="page-heading">
       <a class="eyebrow back-link" href="/journal">← Journal</a>
       <h1>{entry.data.title}</h1>
       <p class="article-meta"><time datetime={entry.data.published.toISOString()}>{entry.data.published.toLocaleDateString("en", { year: "numeric", month: "long", day: "numeric", timeZone: "UTC" })}</time><span aria-hidden="true"> · </span>{entry.data.readingTime} min read</p>
+      {entry.data.tags.length > 0 && (
+        <nav class="topic-list" aria-label="Article topics">
+          {entry.data.tags.map((tag) => <a href={`/journal/topics/${tag}/`}>{getJournalTopicLabel(tag)}</a>)}
+        </nav>
+      )}
     </header>
+    {entry.data.cover && <img class="article-cover" src={entry.data.cover} alt={entry.data.coverAlt ?? ""} />}
     <div class="prose article-content"><Content /></div>
   </article>
 </BaseLayout>

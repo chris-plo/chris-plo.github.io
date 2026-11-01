@@ -15,7 +15,7 @@ content:
       template: "{published}-{title}.md"
       field: create
     view:
-      fields: [title, published, draft]
+      fields: [title, published, tags, draft]
       primary: title
       sort: [published, title]
       default:
@@ -42,6 +42,39 @@ content:
       - name: readingTime
         label: Reading time (minutes)
         type: number
+      - name: updated
+        label: Last updated
+        type: date
+        options:
+          format: yyyy-MM-dd
+      - name: tags
+        label: Topics
+        type: select
+        options:
+          multiple: true
+          values:
+            - value: software-engineering
+              label: Software engineering
+            - value: artificial-intelligence
+              label: Artificial intelligence
+            - value: distributed-systems
+              label: Distributed systems
+            - value: technical-leadership
+              label: Technical leadership
+            - value: search
+              label: Search
+            - value: career
+              label: Career
+            - value: science-and-culture
+              label: Science and culture
+            - value: life-beyond-code
+              label: Life beyond code
+      - name: cover
+        label: Cover image
+        type: image
+      - name: coverAlt
+        label: Cover image description
+        type: string
       - name: body
         label: Article
         type: rich-text

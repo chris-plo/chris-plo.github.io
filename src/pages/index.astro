@@ -1,0 +1,162 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import workPortrait from "../assets/professional/chris-plossl-professional-portrait.jpg";
+import workPortraitTwo from "../assets/professional/chris-plossl-at-work.jpg";
+---
+<BaseLayout>
+  <section class="hero">
+    <div>
+      <span class="eyebrow">Software · Systems · People</span>
+      <h1>Building things.<br /><em>Making sense</em> of them.</h1>
+      <div class="hero-introduction">
+        <figure class="hero-portrait">
+          <img src={workPortraitTwo.src} width={workPortraitTwo.width} height={workPortraitTwo.height} alt="Chris Plössl in a warm-toned professional portrait." loading="eager" decoding="async" />
+        </figure>
+        <div>
+          <p class="lede">I’m Chris, a Senior Software Development Engineer at Amazon in Madrid. I love solving problems, and software is the way I get to work on them—from physical automation to search experiences used by millions of customers.</p>
+          <div class="hero-actions">
+            <a class="text-link" href="#about">A little about me <span aria-hidden="true">↓</span></a>
+            <a class="text-link" href="https://www.linkedin.com/in/christoph-pl" target="_blank" rel="noreferrer">Get in touch on LinkedIn <span aria-hidden="true">↗</span></a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="about" aria-labelledby="about-heading">
+    <div class="section-heading">
+      <div><span class="eyebrow">01 / About</span><h2 id="about-heading">A path through systems.</h2></div>
+      <p>From physical operations to software.</p>
+    </div>
+    <div class="about-layout">
+      <div class="home-copy">
+        <h3>From physical systems to software at scale</h3>
+          <p>I’ve been drawn to computers, the web and logical problem-solving for as long as I can remember. I started programming around 14 or 15, taught myself Java, and chose to go straight into industry after school rather than study at university. My professional software engineering path began in 2013.</p>
+          <p>I spent eight years working in industrial automation, warehousing and logistics during my time at TGW, Syskron and Siemens in Germany. One early highlight was visiting a customer site in Denmark and seeing a huge conveyor and high-rack storage system running in person. During a weekend test, I changed a few lines of software and watched the cranes retrieve and store boxes around 30 metres above the floor. Software had moved from a simulation on a screen to a physical system behaving exactly as I intended.</p>
+          <p>In 2021, after the pandemic had made me rethink my comfort zone, I decided to explore a different field. I joined Amazon in Madrid to work on search: technically complex systems where even a seemingly small change can make a meaningful difference to customers. I was promoted to Senior Software Development Engineer in 2024.</p>
+        <h3>Engineering with others</h3>
+        <p>I’m drawn to the work that happens between teams: aligning on the customer problem, surfacing constraints early and making trade-offs clear enough for people to act. To me, technical leadership means helping a group reach a decision the team understands and can carry forward together.</p>
+        <h3>Beyond the terminal</h3>
+        <p>My curiosity extends beyond technology into science, history, philosophy and culture. I enjoy reading across disciplines and following questions that do not fit neatly into one category.</p>
+        <p>This site brings those threads together: a place to describe my professional experience in broad, public-safe terms and to share ideas as they take shape.</p>
+      </div>
+      <figure class="about-portrait">
+        <img src={workPortrait.src} width={workPortrait.width} height={workPortrait.height} alt="Chris Plössl in a professional portrait beside a stone column." loading="lazy" decoding="async" />
+        <figcaption>Professional software engineering, since 2013.</figcaption>
+      </figure>
+    </div>
+  </section>
+
+  <section class="section" id="engineering" aria-labelledby="engineering-heading">
+    <div class="feature-band">
+      <div><span class="eyebrow">02 / Engineering</span><h2 id="engineering-heading">Good systems make room for people.</h2></div>
+      <div>
+        <p>Engineering is technical work, but it is also a practice of making decisions together. I’m interested in the systems, constraints and habits that help teams build with clarity—and in the customer experience those decisions create.</p>
+        <ul class="focus-list">
+          <li>Distributed systems that stay understandable as they grow</li>
+          <li>Search, relevance and personalisation</li>
+          <li>Technical leadership that gives teams clarity and room to act</li>
+        </ul>
+      </div>
+    </div>
+    <div class="home-copy engineering-copy">
+      <h3>How I think about engineering</h3>
+      <p>Architecture is a set of trade-offs, not a collection of fashionable technologies. I value simple designs that make constraints visible, systems that can be operated confidently, and teams that understand the reasoning behind a decision.</p>
+      <p>At Amazon, a customer experience often depends on teams working across the world. A solution rarely lives inside one team, so ownership has to reach beyond technical boundaries. I use the customer experience as common ground: it helps us move past differences in implementation and focus on what will make the whole experience better.</p>
+      <p>As a Senior SDE, I help define my team’s technical roadmap and influence product direction. Good technical leadership, to me, means building shared context and helping people make sound decisions together.</p>
+      <h3>Experience</h3>
+      <p>My experience spans industrial automation and logistics, technical delivery, and software engineering in large-scale systems. Across those settings, I’ve stayed interested in how software meets operations, how decisions affect maintainability, and how teams share responsibility for what they build.</p>
+    </div>
+  </section>
+
+  <section class="section" id="case-study" aria-labelledby="case-study-heading">
+    <div class="feature-band">
+      <div class="case-study-heading"><span class="eyebrow">03 / A small change, at scale</span><h2 id="case-study-heading">Add to cart from search.</h2><div class="cart-demo"><button class="add-to-cart-demo" type="button" data-cart-add aria-label="Add to basket">Add to cart</button><div class="cart-stepper" data-cart-stepper role="group" aria-label="Basket quantity" hidden><button class="cart-stepper-action" type="button" data-cart-decrease aria-label="Remove from basket"><svg class="cart-remove-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 6h18M8 6V4h8v2m-9 0 1 14h8l1-14M10 10v6m4-6v6" /></svg><span class="cart-minus-icon" aria-hidden="true">−</span></button><span class="cart-quantity" data-cart-count aria-live="polite">1 in cart</span><button class="cart-stepper-action" type="button" data-cart-increase aria-label="Add one more">+</button></div></div></div>
+      <div>
+        <p>In 2023, I worked on the first version of Amazon’s search-page Add to Cart button. Before it launched, customers had to open a product page to add an item to their cart—even for something as simple as a pen or an apple.</p>
+        <p>The button looks simple. Supporting the range of products behind it was not: some items are sold in packs, have order limits, are priced by weight, or need personalisation. I implemented parts of the backend and the frontend JavaScript, and helped with QA and on-call monitoring as the feature reached customers. The launch was a strong success in customer metrics.</p>
+        <p>It remains a good example of the work I enjoy: solving a detailed technical problem to make an everyday customer task feel easier.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="section-heading">
+      <div><span class="eyebrow">04 / A wider lens</span><h2>Work is one part of it.</h2></div>
+      <p>Some threads I keep coming back to.</p>
+    </div>
+    <div class="interest-grid">
+      <article class="interest"><span class="number">01</span><h3>Engineering</h3><p>Reliable systems, thoughtful trade-offs and the craft of making useful software.</p></article>
+      <article class="interest"><span class="number">02</span><h3>Technology & AI</h3><p>Understanding what is changing, what matters and what deserves a closer look.</p></article>
+      <article class="interest"><span class="number">03</span><h3>Ideas & culture</h3><p>Following ideas across science, history, philosophy, society and culture.</p></article>
+      <article class="interest"><span class="number">04</span><h3>Life beyond code</h3><p>Madrid sunshine, exploring the city’s food from around the world, and time with my wife and our two cats.</p></article>
+    </div>
+  </section>
+
+  <section class="section current-section" aria-labelledby="current-heading">
+    <div class="section-heading">
+      <div><span class="eyebrow">05 / Lately</span><h2 id="current-heading">Currently thinking about.</h2></div>
+      <p>A small snapshot, rather than a live feed.</p>
+    </div>
+    <ul class="current-list">
+      <li>How AI is changing software development—and what still takes care and judgment.</li>
+      <li>How complex systems can stay understandable as they grow.</li>
+      <li>Philosophical questions, and connections between ideas in science, history and culture.</li>
+    </ul>
+  </section>
+
+  <section class="section journal-preview">
+    <div class="section-heading">
+      <div><span class="eyebrow">06 / Journal</span><h2>Notes in the making.</h2></div>
+      <a class="text-link" href="/journal">Visit the journal <span aria-hidden="true">↗</span></a>
+    </div>
+    <p class="lede">I started journaling because work moves quickly, and writing gives me room to think. I’m exploring questions about technology, GenAI and life, with AI as a prompt for reflection rather than a substitute for my own thinking. When I find something useful to build or learn, I hope to share it here.</p>
+  </section>
+
+  <section class="section" id="mentoring" aria-labelledby="mentoring-heading">
+    <div class="feature-band">
+      <div><span class="eyebrow">07 / Mentoring</span><h2 id="mentoring-heading">Early in your career?</h2></div>
+      <div>
+        <p>I’m happy to talk with junior engineers about career direction, technical growth, or finding your footing in a world changing quickly with GenAI. I’m open to different kinds of conversations, and I’m not doing it for money.</p>
+        <a class="text-link" href="https://www.linkedin.com/in/christoph-pl" target="_blank" rel="noreferrer">Reach out on LinkedIn <span aria-hidden="true">↗</span></a>
+      </div>
+    </div>
+  </section>
+
+  <script>
+    const addToCartButton = document.querySelector<HTMLButtonElement>("[data-cart-add]");
+    const cartStepper = document.querySelector<HTMLDivElement>("[data-cart-stepper]");
+    const cartCount = document.querySelector<HTMLSpanElement>("[data-cart-count]");
+    const decreaseCartButton = document.querySelector<HTMLButtonElement>("[data-cart-decrease]");
+    const increaseCartButton = document.querySelector<HTMLButtonElement>("[data-cart-increase]");
+
+    if (addToCartButton && cartStepper && cartCount && decreaseCartButton && increaseCartButton) {
+      let quantity = 0;
+      const renderCart = () => {
+        const hasItems = quantity > 0;
+        addToCartButton.hidden = hasItems;
+        cartStepper.hidden = !hasItems;
+        cartCount.textContent = `${quantity} in cart`;
+        decreaseCartButton.setAttribute("aria-label", quantity > 1 ? "Decrease quantity" : "Remove from basket");
+        decreaseCartButton.classList.toggle("is-removal", quantity === 1);
+      };
+
+      addToCartButton.addEventListener("click", () => {
+        quantity = 1;
+        renderCart();
+        decreaseCartButton.focus();
+      });
+      increaseCartButton.addEventListener("click", () => {
+        quantity += 1;
+        renderCart();
+        increaseCartButton.focus();
+      });
+      decreaseCartButton.addEventListener("click", () => {
+        quantity = Math.max(0, quantity - 1);
+        renderCart();
+        if (quantity === 0) addToCartButton.focus();
+        else decreaseCartButton.focus();
+      });
+    }
+  </script>
+</BaseLayout>

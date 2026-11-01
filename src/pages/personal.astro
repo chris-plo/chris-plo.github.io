@@ -1,0 +1,97 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+
+const photoFiles = import.meta.glob<string>("../assets/personal/*.{avif,jpg,jpeg,png,webp}", {
+  eager: true,
+  query: "?url",
+  import: "default"
+});
+const captions: Record<string, { alt: string; caption: string; section?: "cats" | "wife"; catFocus?: boolean }> = {
+  "a-birthday-gathering": {
+    alt: "Sharing a birthday cake with my family.",
+    caption: "Sharing a birthday cake with my family back home in Bavaria in 2026."
+  },
+  "a-colourful-day-out": {
+    alt: "Enjoying a meal at a colourful restaurant on a recent trip to Oaxaca, Mexico.",
+    caption: "Enjoying food on a recent trip to Oaxaca, Mexico."
+  },
+  "a-day-out-together": {
+    alt: "My wife and I enjoying a sunny day in Toledo.",
+    caption: "A sunny day in Toledo in March, getting out of the city together.",
+    section: "wife"
+  },
+  "beside-the-flower-wall": {
+    alt: "Flower Puppy beside the Guggenheim Museum in Bilbao.",
+    caption: "Flower Puppy beside the Guggenheim Museum in Bilbao."
+  },
+  "black-cat-in-the-chair": {
+    alt: "Our black cat relaxing in an armchair.",
+    caption: "Who’s the boss here?",
+    section: "cats"
+  },
+  "cat-at-the-desk": {
+    alt: "Our cat keeping watch from the desk.",
+    caption: "A little company while I work.",
+    section: "cats"
+  },
+  "cat-by-the-window": {
+    alt: "Our cat looking out of the window.",
+    caption: "Watching the world go by.",
+    section: "cats"
+  },
+  "chris-by-a-mosaic-wall": {
+    alt: "Exploring Tangier, North Africa.",
+    caption: "Exploring new horizons in Tangier, North Africa."
+  },
+  "two-cats-at-home": {
+    alt: "One of our cats stretched out in the sunshine beside a houseplant.",
+    caption: "Enjoying the Madrid sunshine.",
+    section: "cats",
+    catFocus: true
+  }
+};
+const photos = Object.entries(photoFiles)
+  .sort(([a], [b]) => a.localeCompare(b))
+  .flatMap(([path, src]) => {
+    const name = path.split("/").at(-1)?.replace(/\.[^.]+$/, "") ?? "";
+    const details = captions[name];
+    return details ? [{ src, name, ...details }] : [];
+  });
+const moments = photos.filter((photo) => !photo.section);
+const catPhotos = photos.filter((photo) => photo.section === "cats");
+const wifePhoto = photos.find((photo) => photo.section === "wife");
+---
+<BaseLayout title="Personal — Chris Plössl" description="Family, food, sunshine and everyday moments from Chris Plössl's life in Madrid beyond software.">
+  <section class="page-heading">
+    <span class="eyebrow">Personal</span>
+    <h1>Life beyond the day job.</h1>
+    <p class="lede">Madrid gave me sunshine and a family I hoped for but didn’t expect to find here: my wife and our two cats. I’m also a foodie, and love exploring the city through its food—from Latin American and Mediterranean flavours to Asian cuisines.</p>
+  </section>
+
+  <section class="personal-gallery" aria-labelledby="moments-heading">
+    <h2 id="moments-heading">A few moments</h2>
+    {moments.length ? (
+      <div class="photo-grid">
+        {moments.map((photo) => <figure><img src={photo.src} alt={photo.alt} loading="lazy" decoding="async" /><figcaption>{photo.caption}</figcaption></figure>)}
+      </div>
+    ) : (
+      <p class="photo-empty">Personal photographs will appear here as I add them.</p>
+    )}
+  </section>
+
+  <section class="personal-note" aria-labelledby="cats-heading">
+    <span class="eyebrow">At home</span>
+    <h2 id="cats-heading">The cats</h2>
+    <p>Mus (a tiger cat) and Regina (a British Shorthair) share our home and make sure life has its own rhythm, well beyond the hours spent at a screen.</p>
+    <div class="photo-grid cat-grid">
+      {catPhotos.map((photo) => <figure><img class:list={{ "cat-focus": photo.catFocus }} src={photo.src} alt={photo.alt} loading="lazy" decoding="async" /><figcaption>{photo.caption}</figcaption></figure>)}
+    </div>
+  </section>
+
+  <section class="personal-note" aria-labelledby="thanks-heading">
+    <span class="eyebrow">With love</span>
+    <h2 id="thanks-heading">A note for my wife</h2>
+    <p class="wife-thanks">Thank you for sharing this life with me. I’m grateful for you, every day.</p>
+    {wifePhoto && <figure class="wife-photo"><img src={wifePhoto.src} alt={wifePhoto.alt} loading="lazy" decoding="async" /><figcaption>{wifePhoto.caption}</figcaption></figure>}
+  </section>
+</BaseLayout>

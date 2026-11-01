@@ -1,0 +1,25 @@
+---
+import { getCollection } from "astro:content";
+import BaseLayout from "../../layouts/BaseLayout.astro";
+
+const entries = (await getCollection("journal"))
+  .filter((entry) => !entry.data.draft)
+  .sort((a, b) => b.data.published.valueOf() - a.data.published.valueOf());
+---
+<BaseLayout title="Journal — Chris Plössl" description="Notes and essays on engineering, technology, science, culture and ideas.">
+  <section class="page-heading">
+    <span class="eyebrow">Journal</span>
+    <h1>Ideas are better when they travel.</h1>
+    <p class="lede">Essays, notes and discoveries along the way—from engineering and technology to science, history and culture.</p>
+  </section>
+  {entries.length ? (
+    <div class="post-list">
+      {entries.map((entry) => <article class="post">
+        <time datetime={entry.data.published.toISOString()}>{entry.data.published.toLocaleDateString("en", { year: "numeric", month: "long", day: "numeric", timeZone: "UTC" })}</time>
+        <div><h2><a href={`/journal/${entry.id}/`}>{entry.data.title}</a></h2><p>{entry.data.description}</p></div>
+      </article>)}
+    </div>
+  ) : (
+    <p class="empty-state">The journal is getting started. New writing will appear here when it’s ready.</p>
+  )}
+</BaseLayout>

@@ -3,6 +3,7 @@ const renderCart = (demo, quantity) => {
   const stepper = demo.querySelector("[data-cart-stepper]");
   const count = demo.querySelector("[data-cart-count]");
   const decrease = demo.querySelector("[data-cart-decrease]");
+  const hint = demo.querySelector("[data-cart-hint]");
 
   if (!addButton || !stepper || !count || !decrease) return;
 
@@ -11,6 +12,7 @@ const renderCart = (demo, quantity) => {
   addButton.hidden = hasItems;
   stepper.hidden = !hasItems;
   count.textContent = `${quantity} in cart`;
+  if (hint) hint.textContent = hasItems ? "Use + and − to adjust the quantity." : "Try it: add an item, then adjust the quantity.";
   decrease.setAttribute("aria-label", quantity > 1 ? "Decrease quantity" : "Remove from basket");
   decrease.classList.toggle("is-removal", quantity === 1);
 };

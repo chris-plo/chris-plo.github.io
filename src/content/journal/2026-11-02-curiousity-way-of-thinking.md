@@ -31,7 +31,7 @@ It gives you access to people, their experiences and the way they see the world.
 
 Learning Spanish helped me build a life in Spain. I met my wife, made friends outside of work and became part of a world that would otherwise have remained quite distant from me.
 
-Earlier this year, we visited my wife's hometown in Mexico. It's a very small town, quite literally in the middle of nowhere. I was probably the first German some of the people there had ever met.
+Earlier this year, we visited my wife's hometown in Mexico. It's a very small town, quite literally in the middle of nowhere. I was probably the first German or even non-Mexican most of the people there had ever met.
 
 I got to meet so many interesting people and experience a way of life very different from my own. I don't think I would have had those experiences if I hadn't been curious about the language and the people who speak it.
 

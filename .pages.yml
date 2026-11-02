@@ -78,6 +78,7 @@ content:
       - name: body
         label: Article
         type: rich-text
+        description: "Write in Markdown. Add [[cart-demo]] or [[product-swatches]] on its own line to insert an interactive demo."
         options:
           format: markdown
           media: false

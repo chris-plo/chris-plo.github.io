@@ -1,0 +1,17 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import ProductSwatches from "../components/ProductSwatches.astro";
+---
+
+<BaseLayout title="Color swatch preview — Chris Plössl" description="Preview of an interactive product image and color swatch gallery.">
+  <article class="article-page">
+    <header class="page-heading">
+      <span class="eyebrow">Component preview</span>
+      <h1>Interactive color swatches</h1>
+      <p class="lede">Choose a color to change the product image. The gallery itself contains only the image and swatches.</p>
+    </header>
+    <div class="prose article-content">
+      <ProductSwatches />
+    </div>
+  </article>
+</BaseLayout>

@@ -6,7 +6,7 @@ const links = [
 ];
 const path = Astro.url.pathname.replace(/\/$/, "") || "/";
 ---
-<header class="site-header">
+<header class="site-header" data-scroll-header>
   <a class="wordmark" href="/" aria-label="Chris Plössl home">cp<span>.</span></a>
   <nav aria-label="Main navigation">
     {links.map((link) => {
@@ -15,3 +15,41 @@ const path = Astro.url.pathname.replace(/\/$/, "") || "/";
     })}
   </nav>
 </header>
+
+<script is:inline>
+  (() => {
+    const header = document.querySelector("[data-scroll-header]");
+    if (!header) return;
+
+    let previousScrollY = window.scrollY;
+    let ticking = false;
+    const revealAt = 120;
+    const movementThreshold = 6;
+
+    const updateHeader = () => {
+      const currentScrollY = Math.max(0, window.scrollY);
+      const movement = currentScrollY - previousScrollY;
+
+      header.classList.toggle("is-visible-on-scroll", currentScrollY > revealAt);
+
+      if (currentScrollY <= revealAt || header.contains(document.activeElement)) {
+        header.classList.remove("is-hidden");
+      } else if (movement > movementThreshold) {
+        header.classList.add("is-hidden");
+      } else if (movement < -movementThreshold) {
+        header.classList.remove("is-hidden");
+      }
+
+      previousScrollY = currentScrollY;
+      ticking = false;
+    };
+
+    window.addEventListener("scroll", () => {
+      if (ticking) return;
+      ticking = true;
+      window.requestAnimationFrame(updateHeader);
+    }, { passive: true });
+
+    header.addEventListener("focusin", () => header.classList.remove("is-hidden"));
+  })();
+</script>

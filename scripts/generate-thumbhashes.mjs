@@ -1,9 +1,10 @@
 import { readdir, mkdir, writeFile } from "node:fs/promises";
 import { join, relative } from "node:path";
+import { fileURLToPath } from "node:url";
 import sharp from "sharp";
 import { rgbaToThumbHash } from "thumbhash";
 
-const root = new URL("..", import.meta.url).pathname;
+const root = fileURLToPath(new URL("../", import.meta.url));
 const assetDirectories = ["src/assets/personal", "src/assets/professional"];
 const outputPath = join(root, "src/data/thumbhashes.ts");
 

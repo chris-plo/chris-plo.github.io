@@ -1,0 +1,7 @@
+---
+import { shirtVariants } from "../data/shirt-variants.mjs";
+import { renderProductSwatches } from "../lib/product-swatches-markup.mjs";
+
+const { variants = shirtVariants, selectedIndex = 2 } = Astro.props;
+---
+<Fragment set:html={renderProductSwatches(variants, selectedIndex)} />

@@ -1,0 +1,66 @@
+---
+import BlurredProductRecipes from "./BlurredProductRecipes.astro";
+const flavors = ["Chocolate Chip", "Cinnamon", "Cinnamon Roll", "Funfetti"];
+const sizes = ["10 Ounce (Pack of 1)", "6 Ounce (Pack of 1)", "10 Ounce (Pack of 2)", "10 Ounce (Pack of 4)", "20 Ounce (Pack of 1)"];
+---
+
+<div class="faceout-plain">
+  <article class="asin-faceout" data-faceout>
+    <div class="asin-photo-wrap">
+      <img class="asin-photo" src="https://i5.walmartimages.com/seo/Pillsbury-Mini-Soft-Baked-Cookies-Chocolate-Chip-Snack-Bags-10-ct_9a74b9a0-e347-48c8-9113-6c43031d9186.1dd613ec7c0d370c1867a56f75e6f926.jpeg" alt="Pillsbury Mini Soft Baked Chocolate Chip Cookies, ten snack pouches" />
+    </div>
+    <div class="asin-copy">
+      <BlurredProductRecipes
+        title="Pillsbury Mini Soft Baked Cookies, Chocolate Chip…"
+        subtitle="Made With Real Chocolate Chips, Individually Wrapped Snack Pouches…"
+        rating="★★★★◐"
+        reviewCount="5.4K"
+        bought="30K+ bought in past month"
+      >
+        <details slot="after-title" class="asin-options">
+          <summary><span>Options:</span> <span class="options-linklike">4 flavors, 5 sizes</span></summary>
+          <div class="options-panel">
+            <p class="options-label">Flavor</p>
+            <div class="option-chips" role="group" aria-label="Choose flavor">
+              {flavors.map((flavor, index) => <button type="button" data-flavor={flavor} aria-pressed={index === 0}>{flavor}</button>)}
+            </div>
+            <p class="options-label">Size</p>
+            <div class="option-chips size-chips" role="group" aria-label="Choose size">
+              {sizes.map((size, index) => <button type="button" data-size={size} aria-pressed={index === 0}>{size}</button>)}
+            </div>
+          </div>
+        </details>
+      </BlurredProductRecipes>
+    </div>
+  </article>
+</div>
+
+<script>
+  document.addEventListener("click", (event) => {
+    const button = event.target.closest("[data-flavor], [data-size]");
+    if (!button) return;
+    const faceout = button.closest("[data-faceout]");
+    if (!faceout) return;
+
+    const group = button.parentElement;
+    group.querySelectorAll("button").forEach((option) => {
+      const selected = option === button;
+      option.setAttribute("aria-pressed", String(selected));
+      option.classList.toggle("selected", selected);
+    });
+  });
+</script>
+
+<style>
+  .faceout-plain { width:100%; display:flex; justify-content:center; }
+  .asin-faceout { width:min(100%,420px); overflow:visible; border:1px solid #e7e7e7; border-radius:7px; padding:clamp(20px,3vw,32px); background:#fff; color:#0f1111; box-shadow:0 3px 14px #00000012; font:16px/1.4 Arial,sans-serif; }
+  .asin-photo-wrap { position:relative; width:min(100%,340px); aspect-ratio:2/3; margin:0 auto; display:grid; place-items:center; background:#fff; border-radius:7px; }
+  .asin-photo { display:block; width:100%; height:100%; padding:14px; object-fit:contain; background:#fff; }
+  .asin-copy { padding:18px 0 0; }
+  .asin-options { position:relative; margin:7px 0 8px; font-size:20px; }
+  .asin-options summary { cursor:pointer; list-style:none; }.asin-options summary::-webkit-details-marker { display:none; }.options-linklike { color:#1767aa; }.asin-options summary:hover .options-linklike { text-decoration:underline; }
+  .options-panel { position:absolute; z-index:3; top:calc(100% + 8px); left:-5px; width:calc(100% + 10px); padding:16px; border:1px solid #d5d9d9; border-radius:7px; background:#fff; box-shadow:0 6px 24px #0003; font-size:14px; }
+  .options-label { margin:0 0 8px; font-weight:700; }.options-label:not(:first-child) { margin-top:15px; }
+  .option-chips { display:flex; flex-wrap:wrap; gap:7px; }.option-chips button { border:1px solid #adb1b8; border-radius:5px; padding:7px 9px; color:#0f1111; background:#fff; font:12px Arial,sans-serif; cursor:pointer; }.option-chips button:hover { border-color:#e77600; }.option-chips button[aria-pressed="true"],.option-chips button.selected { border:2px solid #e77600; background:#fffaf0; padding:6px 8px; }
+  @media(max-width:480px) { .asin-faceout { width:min(100%,420px); }.asin-options { font-size:18px; } }
+</style>

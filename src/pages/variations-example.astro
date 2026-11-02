@@ -1,0 +1,36 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import AsinFaceout from "../components/AsinFaceout.astro";
+import ProductSwatches from "../components/ProductSwatchesDemo.astro";
+---
+
+<BaseLayout title="Product variations demo — Chris Plössl" description="A focused, interactive product variation selector demo.">
+  <section class="page-heading demo-heading">
+    <p class="eyebrow">Component study</p>
+    <h1>Product variations</h1>
+    <p class="lede">Two interactive product patterns: a color-switched gallery and an ASIN faceout with a variation link.</p>
+  </section>
+  <div class="demo-wrap">
+    <div class="component-grid">
+      <section class="component-panel">
+        <p class="component-label">Color swatches</p>
+        <ProductSwatches />
+      </section>
+      <section class="component-panel">
+        <p class="component-label">ASIN faceout</p>
+        <AsinFaceout />
+      </section>
+    </div>
+  </div>
+</BaseLayout>
+
+<style>
+  .demo-heading { padding:72px 0 34px; }
+  .demo-heading h1 { margin:14px 0; font:500 clamp(42px,7vw,76px)/1 var(--serif); letter-spacing:-.045em; }
+  .demo-heading .lede { max-width:650px; margin:0; }
+  .demo-wrap { margin-bottom:72px; }
+  .component-grid { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:24px; align-items:stretch; }
+  .component-panel { min-width:0; }
+  .component-label { margin:0 0 12px; color:var(--accent); font:11px var(--mono); letter-spacing:.12em; text-transform:uppercase; }
+  @media(max-width:760px) { .component-grid { grid-template-columns:minmax(0,1fr); } }
+</style>

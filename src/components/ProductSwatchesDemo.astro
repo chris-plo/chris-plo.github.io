@@ -1,0 +1,98 @@
+---
+import BlurredProductRecipes from "./BlurredProductRecipes.astro";
+const colors = [
+  { name: "White", image: "https://m.media-amazon.com/images/I/61x-LF9fyYL._AC_SR350,526_FMwebp_QL65_.jpg" },
+  { name: "Black", image: "https://m.media-amazon.com/images/I/614rbIVRUJL._AC_SR350,526_QL65_.jpg" },
+  { name: "Dark Heather", image: "https://m.media-amazon.com/images/I/81LfDJJTYLL._AC_SR350,526_QL65_.jpg" },
+  { name: "Galapagos Blue", image: "https://m.media-amazon.com/images/I/71Nwkwn0NAL._AC_SR350,526_QL65_.jpg" },
+  { name: "Gold", image: "https://m.media-amazon.com/images/I/71fHbPEcYqL._AC_SR350,526_QL65_.jpg" },
+  { name: "Light Blue", image: "https://m.media-amazon.com/images/I/71xmYL5C5tL._AC_SR350,526_QL65_.jpg" },
+  { name: "Military Green", image: "https://m.media-amazon.com/images/I/61vKLx5NuWL._AC_SR350,526_QL65_.jpg" },
+  { name: "Navy", image: "https://m.media-amazon.com/images/I/61ZPYOkKYzL._AC_SR350,526_QL65_.jpg" },
+];
+const initial = 2;
+---
+
+<section class="swatches-demo" aria-label="T-shirt color variation selector" data-product-swatches>
+  <div class="swatch-photo">
+    <img class="swatch-image is-active" src={colors[initial].image} alt={`${colors[initial].name} Gildan Ultra Cotton T-shirt`} data-swatch-layer />
+    <img class="swatch-image" alt="" aria-hidden="true" data-swatch-layer />
+  </div>
+  <div class="swatch-controls" role="group" aria-label="Choose a shirt color">
+    {colors.map((color, index) => (
+      <button
+        type="button"
+        class:list={["color-swatch", { "is-selected": index === initial }]}
+        style={`--swatch-color:${[
+          "#f5f5f2", "#171717", "#4a4a4a", "#416884", "#c8a11d", "#83b5d1", "#626b3f", "#202b42"
+        ][index]}`}
+        aria-label={color.name}
+        aria-pressed={index === initial}
+        data-swatch-index={index}
+      ><span></span></button>
+    ))}
+  </div>
+  <BlurredProductRecipes
+    title="Gildan Adult Ultra Cotton T-Shirt, Style G2000, Multipack"
+    extraLine="More colors available"
+  />
+</section>
+
+<script>
+  const swatchColors = [
+    { name: "White", image: "https://m.media-amazon.com/images/I/61x-LF9fyYL._AC_SR350,526_FMwebp_QL65_.jpg" },
+    { name: "Black", image: "https://m.media-amazon.com/images/I/614rbIVRUJL._AC_SR350,526_QL65_.jpg" },
+    { name: "Dark Heather", image: "https://m.media-amazon.com/images/I/81LfDJJTYLL._AC_SR350,526_QL65_.jpg" },
+    { name: "Galapagos Blue", image: "https://m.media-amazon.com/images/I/71Nwkwn0NAL._AC_SR350,526_QL65_.jpg" },
+    { name: "Gold", image: "https://m.media-amazon.com/images/I/71fHbPEcYqL._AC_SR350,526_QL65_.jpg" },
+    { name: "Light Blue", image: "https://m.media-amazon.com/images/I/71xmYL5C5tL._AC_SR350,526_QL65_.jpg" },
+    { name: "Military Green", image: "https://m.media-amazon.com/images/I/61vKLx5NuWL._AC_SR350,526_QL65_.jpg" },
+    { name: "Navy", image: "https://m.media-amazon.com/images/I/61ZPYOkKYzL._AC_SR350,526_QL65_.jpg" },
+  ];
+
+  document.addEventListener("click", (event) => {
+    const button = event.target.closest("[data-swatch-index]");
+    const gallery = button?.closest("[data-product-swatches]");
+    if (!button || !gallery) return;
+    const color = swatchColors[Number(button.dataset.swatchIndex)];
+    const layers = [...gallery.querySelectorAll("[data-swatch-layer]")];
+    const current = layers.find((image) => image.classList.contains("is-active"));
+    const incoming = layers.find((image) => image !== current);
+    if (!color || !current || !incoming) return;
+
+    gallery.querySelectorAll("[data-swatch-index]").forEach((swatch) => {
+      const selected = swatch === button;
+      swatch.classList.toggle("is-selected", selected);
+      swatch.setAttribute("aria-pressed", String(selected));
+    });
+    const requestId = String(Number(gallery.dataset.requestId ?? 0) + 1);
+    gallery.dataset.requestId = requestId;
+    const preload = new Image();
+    preload.onload = () => {
+      if (gallery.dataset.requestId !== requestId) return;
+      incoming.src = color.image;
+      incoming.alt = `${color.name} Gildan Ultra Cotton T-shirt`;
+      incoming.removeAttribute("aria-hidden");
+      current.alt = "";
+      current.setAttribute("aria-hidden", "true");
+      requestAnimationFrame(() => {
+        current.classList.remove("is-active");
+        incoming.classList.add("is-active");
+      });
+    };
+    preload.src = color.image;
+  });
+</script>
+
+<style>
+  .swatches-demo { width:min(100%,420px); margin:0 auto; padding:clamp(20px,3vw,32px); background:#fff; border:1px solid #deded8; }
+  .swatch-photo { position:relative; width:min(100%,340px); margin:0 auto; aspect-ratio:2/3; overflow:hidden; background:#fff; }
+  .swatch-image { position:absolute; inset:0; display:block; width:100%; height:100%; object-fit:contain; background:#fff; opacity:0; transition:opacity .32s ease; }
+  .swatch-image.is-active { opacity:1; }
+  .swatch-controls { display:flex; flex-wrap:wrap; gap:10px; margin:18px 0 22px; }
+  .color-swatch { width:34px; height:34px; padding:3px; border:1px solid #c8c8c2; border-radius:50%; background:#fff; cursor:pointer; }
+  .color-swatch span { display:block; width:100%; height:100%; border:1px solid #0002; border-radius:50%; background:var(--swatch-color); }
+  .color-swatch.is-selected { border:2px solid var(--accent,#a4513f); padding:2px; }
+  .color-swatch:focus-visible { outline:2px solid var(--accent,#a4513f); outline-offset:3px; }
+  @media(prefers-reduced-motion:reduce) { .swatch-image { transition:none; } }
+</style>

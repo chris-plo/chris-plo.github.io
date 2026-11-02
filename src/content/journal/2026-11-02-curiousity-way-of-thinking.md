@@ -4,7 +4,7 @@ description: Curiosity is more than wanting to know things. It's about
   questioning your assumptions, understanding different perspectives and staying
   open to the world around you.
 published: 2026-11-02
-draft: true
+draft: false
 readingTime: 7
 updated: 2026-11-02
 tags:

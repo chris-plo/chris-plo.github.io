@@ -36,7 +36,7 @@ Set `draft` to `false` when the article is ready to publish. Drafts are excluded
 
 ## Audio edition
 
-Narrate an article locally (Qwen3-TTS), export an MP3 named after the article's file name without `.md`, and save it as `public/audio/<article-slug>.mp3`. Then add one line to the article's frontmatter:
+Narrate an article locally (Qwen3-TTS), export an MP3 named after the article's file name without `.md`, and save it as `public/audio/<article-slug>.mp3` (or upload it in Pages CMS through the Audio narration field, which sets the line below for you). Otherwise add one line to the article's frontmatter:
 
 ```yaml
 audio: /audio/<article-slug>.mp3

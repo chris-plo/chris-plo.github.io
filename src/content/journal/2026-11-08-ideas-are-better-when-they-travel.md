@@ -9,6 +9,7 @@ readingTime: 8
 updated: 2026-11-08
 cover: /images/journal/globus-mit-gluhbirne-und-papierflieger.png
 coverAlt: Idea travelling around the world
+audio: /audio/Ideas_Are_Better_When_They_Travel_2026-11-08_20-09-25.mp3
 ---
 # Ideas Are Better When They Travel
 

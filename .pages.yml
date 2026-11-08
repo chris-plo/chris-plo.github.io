@@ -75,6 +75,10 @@ content:
       - name: coverAlt
         label: Cover image description
         type: string
+      - name: audio
+        label: Audio file path
+        type: string
+        description: "Optional. /audio/<article-slug>.mp3, with the MP3 saved in public/audio/."
       - name: body
         label: Article
         type: rich-text

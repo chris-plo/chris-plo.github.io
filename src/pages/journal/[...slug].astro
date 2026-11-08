@@ -1,5 +1,8 @@
 ---
+import { existsSync } from "node:fs";
 import { getCollection, render } from "astro:content";
+import AudioPlayer from "../../components/AudioPlayer.astro";
+import { toAudioEdition, withBase } from "../../lib/audio";
 import BaseLayout from "../../layouts/BaseLayout.astro";
 import { getJournalTopicLabel } from "../../data/journalTopics";
 
@@ -10,6 +13,10 @@ export async function getStaticPaths() {
 
 const { entry } = Astro.props;
 const { Content } = await render(entry);
+const audio = toAudioEdition(entry, Astro.site!);
+if (entry.data.audio && !existsSync(new URL(`../../../public${entry.data.audio}`, import.meta.url))) {
+  throw new Error(`"${entry.id}" sets audio: ${entry.data.audio}, but public${entry.data.audio} does not exist`);
+}
 ---
 <BaseLayout
   title={`${entry.data.title} — Christoph Plössl`}
@@ -31,6 +38,7 @@ const { Content } = await render(entry);
           {entry.data.tags.map((tag) => <a href={`/journal/topics/${tag}/`}>{getJournalTopicLabel(tag)}</a>)}
         </nav>
       )}
+      {audio && <AudioPlayer src={withBase(entry.data.audio!)} title={entry.data.title} />}
     </header>
     {entry.data.cover && <img class="article-cover" src={entry.data.cover} alt={entry.data.coverAlt ?? ""} />}
     <div class="prose article-content"><Content /></div>

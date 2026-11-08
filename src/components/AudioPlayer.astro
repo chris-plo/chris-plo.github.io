@@ -1,0 +1,180 @@
+---
+import { AUDIO_NARRATOR } from "../lib/audio";
+
+interface Props {
+  /** Site-relative or absolute MP3 URL, already including the Astro base. */
+  src: string;
+  title: string;
+}
+
+const { src, title } = Astro.props;
+const SPEEDS = [0.75, 1, 1.25, 1.5, 2];
+---
+<section class="audio-player" aria-labelledby="audio-player-heading" data-audio-player data-narrator={AUDIO_NARRATOR}>
+  <p id="audio-player-heading" class="eyebrow">Listen to this article</p>
+  <p class="audio-meta" data-meta>Narrated by {AUDIO_NARRATOR}</p>
+  <audio preload="metadata" controls src={src} aria-label={`Audio version of ${title}`}>
+    <a href={src}>Download the audio version</a>
+  </audio>
+  <div class="audio-controls" hidden>
+    <button type="button" class="audio-play" data-play aria-label={`Play ${title}`}>
+      <svg class="icon-play" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M8 5.5v13l10.5-6.5z" /></svg>
+      <svg class="icon-pause" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M7 5h3.5v14H7zM13.5 5H17v14h-3.5z" /></svg>
+    </button>
+    <div class="audio-timeline">
+      <input type="range" data-seek min="0" max="0" step="1" value="0" disabled aria-label="Seek" />
+      <span class="audio-time" aria-hidden="true"><span data-current>0:00</span> / <span data-duration>--:--</span></span>
+    </div>
+    <label class="audio-speed">
+      <span class="visually-hidden">Playback speed</span>
+      <select data-speed>
+        {SPEEDS.map((speed) => <option value={speed} selected={speed === 1}>{speed}×</option>)}
+      </select>
+    </label>
+  </div>
+  <p class="audio-status" role="status" data-status></p>
+</section>
+
+<style>
+  .audio-player { margin: 28px 0 0; padding: 18px 0; border-block: 1px solid var(--line); }
+  .audio-player .eyebrow { margin: 0; }
+  .audio-meta { margin: 6px 0 14px; color: var(--muted); font: 500 17px/1.3 var(--serif); }
+  .audio-player[data-enhanced] audio { display: none; }
+  .audio-player:not([data-enhanced]) audio { width: 100%; }
+  .audio-controls { display: flex; align-items: center; gap: 16px; }
+  .audio-play { flex: none; display: grid; place-items: center; width: 48px; height: 48px; padding: 0; border: 1px solid var(--accent); border-radius: 50%; background: transparent; color: var(--accent); cursor: pointer; }
+  .audio-play:hover { background: var(--accent); color: var(--paper); }
+  .audio-play svg { width: 20px; height: 20px; fill: currentColor; }
+  .audio-play .icon-pause { display: none; }
+  .audio-player[data-playing] .icon-play { display: none; }
+  .audio-player[data-playing] .icon-pause { display: block; }
+  .audio-timeline { flex: 1; min-width: 0; display: flex; align-items: center; gap: 14px; }
+  .audio-time { flex: none; color: var(--muted); font: 12px var(--mono); font-variant-numeric: tabular-nums; white-space: nowrap; }
+  .audio-speed select { min-height: 44px; padding: 0 8px; border: 1px solid var(--line); border-radius: 0; background: var(--paper); color: var(--ink); font: 12px var(--mono); cursor: pointer; }
+  .audio-speed select:hover { border-color: var(--accent); }
+  .audio-status { margin: 0; min-height: 0; color: var(--muted); font-size: 13px; }
+  .audio-status:not(:empty) { margin-top: 12px; }
+  .audio-player[data-error] .audio-status { color: var(--accent); }
+  .audio-player[data-error] .audio-controls { opacity: .5; }
+
+  input[type="range"] { flex: 1; min-width: 0; height: 44px; margin: 0; background: transparent; cursor: pointer; -webkit-appearance: none; appearance: none; --progress: 0%; }
+  input[type="range"]:disabled { cursor: default; }
+  input[type="range"]::-webkit-slider-runnable-track { height: 2px; background: linear-gradient(to right, var(--accent) var(--progress), var(--line) var(--progress)); }
+  input[type="range"]::-moz-range-track { height: 2px; background: var(--line); }
+  input[type="range"]::-moz-range-progress { height: 2px; background: var(--accent); }
+  input[type="range"]::-webkit-slider-thumb { -webkit-appearance: none; width: 14px; height: 14px; margin-top: -6px; border: 2px solid var(--paper); border-radius: 50%; background: var(--accent); box-shadow: 0 0 0 1px var(--accent); }
+  input[type="range"]::-moz-range-thumb { width: 10px; height: 10px; border: 2px solid var(--paper); border-radius: 50%; background: var(--accent); box-shadow: 0 0 0 1px var(--accent); }
+  input[type="range"]:disabled::-webkit-slider-thumb { background: var(--line); box-shadow: 0 0 0 1px var(--line); }
+  input[type="range"]:disabled::-moz-range-thumb { background: var(--line); box-shadow: 0 0 0 1px var(--line); }
+
+  .audio-play:focus-visible, .audio-speed select:focus-visible, input[type="range"]:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
+  .visually-hidden { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+
+  @media (max-width: 640px) {
+    .audio-controls { flex-wrap: wrap; gap: 8px 14px; }
+    .audio-timeline { order: 3; flex-basis: 100%; }
+    .audio-speed { margin-left: auto; }
+  }
+</style>
+
+<script>
+  function formatClock(seconds: number): string {
+    const total = Math.floor(seconds);
+    const h = Math.floor(total / 3600);
+    const m = Math.floor((total % 3600) / 60);
+    const s = String(total % 60).padStart(2, "0");
+    return h > 0 ? `${h}:${String(m).padStart(2, "0")}:${s}` : `${m}:${s}`;
+  }
+
+  function spoken(seconds: number): string {
+    const total = Math.floor(seconds);
+    const m = Math.floor(total / 60);
+    const s = total % 60;
+    return `${m} minute${m === 1 ? "" : "s"} ${s} second${s === 1 ? "" : "s"}`;
+  }
+
+  function init(root: HTMLElement): void {
+    const audio = root.querySelector("audio")!;
+    const controls = root.querySelector<HTMLElement>(".audio-controls")!;
+    const meta = root.querySelector<HTMLElement>("[data-meta]")!;
+    const playBtn = root.querySelector<HTMLButtonElement>("[data-play]")!;
+    const seek = root.querySelector<HTMLInputElement>("[data-seek]")!;
+    const current = root.querySelector<HTMLElement>("[data-current]")!;
+    const total = root.querySelector<HTMLElement>("[data-duration]")!;
+    const speed = root.querySelector<HTMLSelectElement>("[data-speed]")!;
+    const status = root.querySelector<HTMLElement>("[data-status]")!;
+    const narrator = root.dataset.narrator!;
+    const title = playBtn.getAttribute("aria-label")!.replace(/^Play /, "");
+
+    audio.removeAttribute("controls");
+    controls.hidden = false;
+    root.dataset.enhanced = "";
+    root.setAttribute("aria-busy", "true");
+    meta.textContent = `${narrator} · Loading audio…`;
+
+    const updateProgress = () => {
+      const max = Number(seek.max) || 1;
+      seek.style.setProperty("--progress", `${(audio.currentTime / max) * 100}%`);
+      seek.value = String(Math.floor(audio.currentTime));
+      current.textContent = formatClock(audio.currentTime);
+      seek.setAttribute("aria-valuetext", `${spoken(audio.currentTime)} of ${spoken(audio.duration)}`);
+    };
+
+    const fail = () => {
+      root.dataset.error = "";
+      root.removeAttribute("aria-busy");
+      root.removeAttribute("data-playing");
+      playBtn.disabled = true;
+      seek.disabled = true;
+      speed.disabled = true;
+      meta.textContent = `Narrated by ${narrator}`;
+      status.textContent = "This audio version is unavailable right now. The article text is unaffected.";
+    };
+
+    audio.addEventListener("loadedmetadata", () => {
+      if (!Number.isFinite(audio.duration)) return fail();
+      root.removeAttribute("aria-busy");
+      seek.max = String(Math.floor(audio.duration));
+      seek.disabled = false;
+      total.textContent = formatClock(audio.duration);
+      meta.textContent = `Narrated by ${narrator} · ${Math.max(1, Math.round(audio.duration / 60))} min`;
+      updateProgress();
+    });
+    audio.addEventListener("timeupdate", updateProgress);
+    audio.addEventListener("play", () => {
+      root.dataset.playing = "";
+      playBtn.setAttribute("aria-label", `Pause ${title}`);
+    });
+    const onStop = () => {
+      root.removeAttribute("data-playing");
+      playBtn.setAttribute("aria-label", `Play ${title}`);
+    };
+    audio.addEventListener("pause", onStop);
+    audio.addEventListener("ended", onStop);
+    audio.addEventListener("waiting", () => { status.textContent = "Buffering…"; });
+    audio.addEventListener("playing", () => { status.textContent = ""; });
+    audio.addEventListener("error", fail);
+
+    playBtn.addEventListener("click", () => {
+      if (audio.paused) {
+        audio.play().catch((error: DOMException) => {
+          if (error.name !== "AbortError") fail();
+        });
+      } else {
+        audio.pause();
+      }
+    });
+    seek.addEventListener("input", () => {
+      audio.currentTime = Number(seek.value);
+      updateProgress();
+    });
+    speed.addEventListener("change", () => {
+      audio.playbackRate = Number(speed.value);
+    });
+
+    if (audio.error) fail();
+    else if (audio.readyState >= 1) audio.dispatchEvent(new Event("loadedmetadata"));
+  }
+
+  document.querySelectorAll<HTMLElement>("[data-audio-player]").forEach(init);
+</script>

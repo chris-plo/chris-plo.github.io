@@ -1,8 +1,16 @@
 media:
-  input: public/images/journal
-  output: /images/journal
-  categories: [image]
-  rename: safe
+  - name: images
+    label: Images
+    input: public/images/journal
+    output: /images/journal
+    categories: [image]
+    rename: safe
+  - name: audio
+    label: Audio
+    input: public/audio
+    output: /audio
+    extensions: [mp3]
+    rename: safe
 
 content:
   - name: journal
@@ -75,6 +83,13 @@ content:
       - name: coverAlt
         label: Cover image description
         type: string
+      - name: audio
+        label: Audio narration (MP3)
+        type: file
+        description: "Optional. Upload an MP3 named after the article, e.g. 2026-11-08-my-article.mp3."
+        options:
+          media: audio
+          extensions: [mp3]
       - name: body
         label: Article
         type: rich-text

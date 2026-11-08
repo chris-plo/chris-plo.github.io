@@ -12,7 +12,8 @@ const journal = defineCollection({
     readingTime: z.number().int().positive().default(4),
     tags: z.array(z.string()).default([]),
     cover: z.string().optional(),
-    coverAlt: z.string().optional()
+    coverAlt: z.string().optional(),
+    audio: z.string().regex(/^\/audio\/[\w.-]+\.mp3$/i, "audio must look like /audio/<file-name>.mp3").optional()
   })
 });
 

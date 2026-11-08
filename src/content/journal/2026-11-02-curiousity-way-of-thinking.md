@@ -10,6 +10,7 @@ updated: 2026-11-02
 tags:
   - science-and-culture
   - life-beyond-code
+audio: /audio/2026-11-02-curiousity-way-of-thinking.mp3
 ---
 # Curiosity Is a Way of Thinking
 

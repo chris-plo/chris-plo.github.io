@@ -24,11 +24,11 @@ const { topic, entries } = Astro.props;
 const topicLabel = getJournalTopicLabel(topic);
 ---
 <BaseLayout
-  title={`${topicLabel} articles — Christoph Plössl`}
+  title={`${topicLabel} articles`}
   description={`Journal entries by Christoph Plössl about ${topicLabel.toLowerCase()}.`}
 >
   <section class="page-heading">
-    <a class="eyebrow back-link" href="/journal">← Journal</a>
+    <a class="eyebrow back-link" href="/journal/">← Journal</a>
     <h1>{topicLabel}</h1>
     <p class="lede">Journal entries filed under {topicLabel.toLowerCase()}.</p>
   </section>

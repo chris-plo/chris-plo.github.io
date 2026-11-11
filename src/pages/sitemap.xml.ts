@@ -5,15 +5,15 @@ const site = "https://chrisplo.dev";
 export async function GET() {
   const entries = (await getCollection("journal")).filter(({ data }) => !data.draft);
   const topics = [...new Set(entries.flatMap(({ data }) => data.tags))];
-  const staticUrls = ["/", "/journal", "/personal"].map(
+  const staticUrls = ["/", "/journal/", "/personal/"].map(
     (path) => `  <url><loc>${new URL(path, site)}</loc></url>`
   );
   const journalUrls = entries.map(
     ({ id, data }) =>
-      `  <url><loc>${new URL(`/journal/${id}`, site)}</loc><lastmod>${(data.updated ?? data.published).toISOString().slice(0, 10)}</lastmod></url>`
+      `  <url><loc>${new URL(`/journal/${id}/`, site)}</loc><lastmod>${(data.updated ?? data.published).toISOString().slice(0, 10)}</lastmod></url>`
   );
   const topicUrls = topics.map(
-    (topic) => `  <url><loc>${new URL(`/journal/topics/${topic}`, site)}</loc></url>`
+    (topic) => `  <url><loc>${new URL(`/journal/topics/${topic}/`, site)}</loc></url>`
   );
   const urls = [...staticUrls, ...journalUrls, ...topicUrls].join("\n");
 

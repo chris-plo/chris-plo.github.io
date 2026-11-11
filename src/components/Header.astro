@@ -1,10 +1,10 @@
 ---
 const links = [
   { href: "/", label: "Home" },
-  { href: "/journal", label: "Journal" },
-  { href: "/personal", label: "Personal" }
+  { href: "/journal/", label: "Journal" },
+  { href: "/personal/", label: "Personal" }
 ];
-const path = Astro.url.pathname.replace(/\/$/, "") || "/";
+const path = Astro.url.pathname;
 ---
 <header class="site-header" data-scroll-header>
   <a class="wordmark" href="/" aria-label="Chris Plössl home">cp<span>.</span></a>

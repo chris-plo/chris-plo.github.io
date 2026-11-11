@@ -11,7 +11,9 @@ const latestJournalEntries = (await getCollection("journal"))
   .sort((a, b) => b.data.published.valueOf() - a.data.published.valueOf())
   .slice(0, 5);
 ---
-<BaseLayout>
+<BaseLayout
+  description="Chris Plössl (Ploessl), Senior Software Development Engineer at Amazon in Madrid. Writing on software engineering, search, AI and technical leadership."
+>
   <section class="hero">
     <div>
       <span class="eyebrow">Software · Systems · People</span>

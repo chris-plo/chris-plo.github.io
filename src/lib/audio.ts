@@ -27,7 +27,7 @@ export function toAudioEdition(entry: CollectionEntry<"journal">, site: URL | st
     title,
     description,
     published,
-    url: new URL(withBase(`/journal/${entry.id}`), site).href,
+    url: new URL(withBase(`/journal/${entry.id}/`), site).href,
     audioUrl: new URL(withBase(audio), site).href
   };
 }

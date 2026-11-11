@@ -26,13 +26,21 @@ const socialImage = await getImage({
   quality: 82
 });
 const socialImageUrl = new URL(image ?? socialImage.src, Astro.site);
+const squarePortrait = await getImage({
+  src: socialImageSource,
+  width: 800,
+  height: 800,
+  fit: "cover",
+  format: "jpeg",
+  quality: 82
+});
 const person = {
   "@type": "Person",
   "@id": "https://chrisplo.dev/#person",
   name: "Christoph Plössl",
   alternateName: ["Chris Plössl", "Christoph Ploessl"],
   url: "https://chrisplo.dev/",
-  image: socialImageUrl.toString(),
+  image: [new URL(squarePortrait.src, Astro.site).toString(), new URL(socialImage.src, Astro.site).toString()],
   jobTitle: "Senior Software Development Engineer",
   worksFor: {
     "@type": "Organization",
@@ -96,7 +104,10 @@ const structuredData = type === "article"
     <link rel="canonical" href={canonical} />
     <link rel="me" href="https://www.linkedin.com/in/christoph-pl" />
     <link rel="sitemap" type="application/xml" href="/sitemap.xml" />
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="icon" href="/favicon.ico" sizes="48x48" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" sizes="any" />
+    <link rel="icon" type="image/png" href="/icon-192.png" sizes="192x192" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
     <meta name="color-scheme" content="light" />
     <meta property="og:site_name" content="Chris Plössl" />
     <meta property="og:locale" content="en_US" />

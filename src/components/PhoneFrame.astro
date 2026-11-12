@@ -1,0 +1,19 @@
+---
+const { label, query = "shirts for men" } = Astro.props;
+---
+<figure class="phone" aria-label={label}>
+  <div class="phone-screen">
+    <div class="phone-search" aria-hidden="true">
+      <svg viewBox="0 0 24 24"><circle cx="10.5" cy="10.5" r="6.5" /><path d="m15.5 15.5 5 5" /></svg>
+      <span>{query}</span>
+    </div>
+    <slot />
+  </div>
+</figure>
+
+<style>
+  .phone { position: relative; width: min(100%, 340px); margin: 0 auto; padding: 12px; border-radius: 40px; background: #1d1f1c; box-shadow: 0 18px 40px rgb(32 34 31 / 18%); }
+  .phone-screen { position: relative; height: 640px; overflow: hidden; border-radius: 30px; background: #fff; color: #0f1111; font: 14px/1.35 "Amazon Ember", Arial, sans-serif; display: flex; flex-direction: column; }
+  .phone-search { display: flex; align-items: center; gap: 8px; margin: 34px 10px 8px; padding: 9px 12px; border: 1px solid #888c8c; border-radius: 8px; background: #fff; box-shadow: 0 1px 2px #0f111126; font-size: 15px; }
+  .phone-search svg { width: 18px; height: 18px; fill: none; stroke: #0f1111; stroke-width: 2; stroke-linecap: round; }
+</style>

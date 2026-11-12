@@ -1,0 +1,141 @@
+---
+import PhoneFrame from "./PhoneFrame.astro";
+import { shirtSvg, shirtViews } from "../lib/demo-shirt-art.mjs";
+
+const viewNames = { front: "front", back: "back", detail: "fabric close-up", folded: "folded" };
+const products = [
+  { title: "Men's Oxford Button-Down Shirt, Regular Fit", color: "#5b84b1", shade: "#3d6590", price: "24.99", rating: 4.5, reviews: "12,408" },
+  { title: "Men's Linen Blend Long Sleeve Shirt", color: "#c9b28f", shade: "#a08a68", price: "29.90", rating: 4, reviews: "3,215" },
+  { title: "Men's Slim Fit Poplin Dress Shirt", color: "#f2f2ee", shade: "#b9b9b2", price: "19.99", rating: 4.5, reviews: "8,902" },
+  { title: "Men's Flannel Shirt, Brushed Cotton", color: "#8c3b3b", shade: "#5f2626", price: "32.50", rating: 4, reviews: "1,677" }
+];
+const stars = (rating) => "★".repeat(Math.round(rating)) + "☆".repeat(5 - Math.round(rating));
+---
+<div class="mg-demo">
+  <PhoneFrame label="Interactive demo: swipeable product images in mobile search results">
+    <p class="mg-count">Over 50,000 results</p>
+    <ul class="mg-grid">
+      {products.map((product, productIndex) => (
+        <li class="mg-card">
+          <div class="mg-gallery" data-gallery>
+            <div class="mg-track" data-gallery-track tabindex="0" role="group" aria-roledescription="carousel" aria-label={`Images of ${product.title}. Use the arrow keys or swipe to browse.`}>
+              {shirtViews.map((view, index) => (
+                <div class="mg-slide" role="group" aria-roledescription="slide" aria-label={`${index + 1} of ${shirtViews.length}`}>
+                  <Fragment set:html={shirtSvg({ ...product, view, label: `${product.title}, ${viewNames[view]} view` })} />
+                </div>
+              ))}
+            </div>
+            <button class="mg-arrow mg-prev" type="button" data-gallery-step="-1" aria-label="Previous image" tabindex="-1">‹</button>
+            <button class="mg-arrow mg-next" type="button" data-gallery-step="1" aria-label="Next image" tabindex="-1">›</button>
+            <div class="mg-dots">
+              {shirtViews.map((_, index) => (
+                <button type="button" class="mg-dot" data-gallery-dot={index} aria-label={`Show image ${index + 1} of ${shirtViews.length}`} aria-current={index === 0 ? "true" : undefined} tabindex="-1"></button>
+              ))}
+            </div>
+          </div>
+          <p class="mg-title">{product.title}</p>
+          <p class="mg-rating"><span aria-hidden="true">{stars(product.rating)}</span><span class="mg-visually-hidden">{product.rating} out of 5 stars</span> <span class="mg-reviews">{product.reviews}</span></p>
+          <p class="mg-price"><sup>$</sup>{product.price.split(".")[0]}<sup>{product.price.split(".")[1]}</sup></p>
+          {productIndex === 0 && <p class="mg-hint" aria-hidden="true">Swipe the image ←→</p>}
+        </li>
+      ))}
+    </ul>
+  </PhoneFrame>
+</div>
+
+<script>
+  const nearestIndex = (track) => Math.round(track.scrollLeft / track.clientWidth);
+
+  const goTo = (track, index) => {
+    const slideCount = track.children.length;
+    const target = Math.max(0, Math.min(slideCount - 1, index));
+    const smooth = !window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    track.scrollTo({ left: target * track.clientWidth, behavior: smooth ? "smooth" : "auto" });
+  };
+
+  const syncDots = (track) => {
+    const gallery = track.closest("[data-gallery]");
+    const index = nearestIndex(track);
+    gallery.querySelectorAll("[data-gallery-dot]").forEach((dot, dotIndex) => {
+      if (dotIndex === index) dot.setAttribute("aria-current", "true");
+      else dot.removeAttribute("aria-current");
+    });
+    gallery.closest(".mg-card")?.querySelector(".mg-hint")?.classList.toggle("is-done", index > 0);
+  };
+
+  document.querySelectorAll("[data-gallery-track]").forEach((track) => {
+    let frame = 0;
+    track.addEventListener("scroll", () => {
+      cancelAnimationFrame(frame);
+      frame = requestAnimationFrame(() => syncDots(track));
+    }, { passive: true });
+
+    track.addEventListener("keydown", (event) => {
+      if (event.key !== "ArrowLeft" && event.key !== "ArrowRight") return;
+      event.preventDefault();
+      goTo(track, nearestIndex(track) + (event.key === "ArrowRight" ? 1 : -1));
+    });
+
+    // Touch and trackpads scroll natively; mouse users get drag-to-swipe.
+    let drag = null;
+    track.addEventListener("pointerdown", (event) => {
+      if (event.pointerType !== "mouse" || event.button !== 0) return;
+      drag = { x: event.clientX, left: track.scrollLeft, start: nearestIndex(track) };
+      track.setPointerCapture(event.pointerId);
+      track.classList.add("is-dragging");
+    });
+    track.addEventListener("pointermove", (event) => {
+      if (drag) track.scrollLeft = drag.left - (event.clientX - drag.x);
+    });
+    const endDrag = (event) => {
+      if (!drag) return;
+      const moved = event.clientX - drag.x;
+      track.classList.remove("is-dragging");
+      goTo(track, Math.abs(moved) > track.clientWidth * 0.15 ? drag.start - Math.sign(moved) : drag.start);
+      drag = null;
+    };
+    track.addEventListener("pointerup", endDrag);
+    track.addEventListener("pointercancel", endDrag);
+  });
+
+  document.addEventListener("click", (event) => {
+    const control = event.target.closest("[data-gallery-dot], [data-gallery-step]");
+    if (!control) return;
+    const track = control.closest("[data-gallery]")?.querySelector("[data-gallery-track]");
+    if (!track) return;
+    const index = control.hasAttribute("data-gallery-dot")
+      ? Number(control.dataset.galleryDot)
+      : nearestIndex(track) + Number(control.dataset.galleryStep);
+    goTo(track, index);
+  });
+</script>
+
+<style>
+  .mg-demo { width: 100%; }
+  .mg-count { margin: 4px 12px 8px; color: #565959; font-size: 12px; }
+  .mg-grid { flex: 1; display: grid; grid-template-columns: 1fr 1fr; gap: 14px 8px; margin: 0; padding: 0 8px 20px; overflow-y: auto; list-style: none; }
+  .mg-card { position: relative; min-width: 0; }
+  .mg-gallery { position: relative; border-radius: 4px; overflow: hidden; background: #f7f7f7; }
+  .mg-track { display: flex; aspect-ratio: 5 / 6; overflow-x: auto; overscroll-behavior-x: contain; scroll-snap-type: x mandatory; scrollbar-width: none; cursor: grab; user-select: none; touch-action: pan-x pan-y; }
+  .mg-track::-webkit-scrollbar { display: none; }
+  .mg-track.is-dragging { scroll-snap-type: none; cursor: grabbing; }
+  .mg-track:focus-visible { outline: 2px solid #007185; outline-offset: -2px; }
+  .mg-slide { flex: 0 0 100%; scroll-snap-align: center; scroll-snap-stop: always; }
+  .mg-slide :global(svg) { display: block; width: 100%; height: 100%; pointer-events: none; }
+  .mg-arrow { position: absolute; top: 50%; width: 26px; height: 26px; padding: 0; border: 0; border-radius: 50%; background: rgb(255 255 255 / 90%); color: #0f1111; font: 20px/24px Arial, sans-serif; box-shadow: 0 1px 3px #0003; transform: translateY(-60%); opacity: 0; cursor: pointer; transition: opacity .15s ease; }
+  .mg-prev { left: 4px; }
+  .mg-next { right: 4px; }
+  .mg-gallery:hover .mg-arrow { opacity: 1; }
+  @media (hover: none) { .mg-arrow { display: none; } }
+  .mg-dots { position: absolute; left: 0; right: 0; bottom: 6px; display: flex; justify-content: center; gap: 5px; }
+  .mg-dot { width: 6px; height: 6px; padding: 0; border: 0; border-radius: 50%; background: #0f111140; cursor: pointer; transition: transform .15s ease, background-color .15s ease; }
+  .mg-dot[aria-current="true"] { background: #0f1111; transform: scale(1.25); }
+  .mg-title { display: -webkit-box; margin: 6px 0 2px; overflow: hidden; font-size: 13px; line-height: 1.3; -webkit-line-clamp: 2; -webkit-box-orient: vertical; }
+  .mg-rating { margin: 0; color: #de7921; font-size: 12px; }
+  .mg-reviews { color: #007185; }
+  .mg-price { margin: 2px 0 0; font-size: 20px; line-height: 1; }
+  .mg-price sup { font-size: 11px; vertical-align: top; position: relative; top: 2px; }
+  .mg-hint { position: absolute; top: 8px; left: 50%; margin: 0; padding: 3px 8px; border-radius: 10px; background: #0f1111cc; color: #fff; font-size: 11px; white-space: nowrap; transform: translateX(-50%); pointer-events: none; transition: opacity .3s ease; }
+  .mg-hint.is-done { opacity: 0; }
+  .mg-visually-hidden { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
+</style>

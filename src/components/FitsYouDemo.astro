@@ -1,0 +1,359 @@
+---
+import PhoneFrame from "./PhoneFrame.astro";
+import { shirtSvg } from "../lib/demo-shirt-art.mjs";
+
+const alphaSizes = ["XS", "S", "M", "L", "XL", "XXL"];
+// Chest sizes in inches, mapped to the alpha size the demo products are filtered by.
+const sizeSystems = {
+  alpha: alphaSizes.map((size) => [size, size]),
+  numeric: alphaSizes.map((size, index) => [String(34 + index * 2), size])
+};
+const quickFilters = ["Most purchased", "4 Stars & Up", "Today's Deals", "Up to $15", "$15 to $25", "$25 to $40", "$40 & above"];
+const dropdowns = [
+  { id: "gender", label: "Gender", options: ["Men", "Women", "Unisex"] },
+  { id: "form", label: "Shirt Form", options: ["Button-down", "Polo", "Henley", "T-shirt"] },
+  { id: "material", label: "Material", options: ["Cotton", "Linen", "Flannel", "Polyester"] },
+  { id: "sleeve", label: "Sleeve Length", options: ["Short sleeve", "Long sleeve"] },
+  { id: "brand", label: "Brands", options: ["Brand A", "Brand B", "Brand C", "Brand D"] },
+  { id: "fit", label: "Fit Type", options: ["Regular", "Slim", "Relaxed"] },
+  { id: "colour", label: "Color", options: ["Blue", "White", "Beige", "Red"] }
+];
+const products = [
+  { title: "Men's Oxford Button-Down Shirt", color: "#5b84b1", shade: "#3d6590", price: "24.99", sizes: ["S", "M", "L", "XL"] },
+  { title: "Men's Linen Blend Shirt", color: "#c9b28f", shade: "#a08a68", price: "29.90", sizes: ["XS", "S"] },
+  { title: "Men's Slim Fit Poplin Shirt", color: "#f2f2ee", shade: "#b9b9b2", price: "19.99", sizes: ["M", "L"] },
+  { title: "Men's Brushed Flannel Shirt", color: "#8c3b3b", shade: "#5f2626", price: "32.50", sizes: ["L", "XL", "XXL"] },
+  { title: "Men's Chambray Work Shirt", color: "#7d93a8", shade: "#5a6f84", price: "27.00", sizes: ["S", "M", "L", "XL", "XXL"] },
+  { title: "Men's Striped Cotton Shirt", color: "#4f6f5a", shade: "#33503d", price: "22.40", sizes: ["XS", "XXL"] }
+];
+---
+<div class="fy-demo" data-fy data-state="implicit" data-size="M" data-size-label="M" data-applied="false">
+  <PhoneFrame label="Interactive demo: the Fits you filter and size bottom sheet in mobile search">
+    <div class="fy-content" data-fy-content>
+      <div class="fy-rib-rows" aria-label="Filters" role="group">
+      <div class="fy-rib">
+        <button type="button" class="fy-chip fy-chip-filters" data-fy-dropdown="all" aria-expanded="false" aria-controls="fy-menu-all" aria-label="All filters">
+          <svg viewBox="0 0 20 20" aria-hidden="true"><path d="M3 5h14M6 10h8M8.5 15h3" /></svg>
+        </button>
+        {quickFilters.map((label) => <button type="button" class="fy-chip" data-fy-toggle aria-pressed="false">{label}</button>)}
+      </div>
+      <div class="fy-rib">
+        <div class="fy-pill">
+          <button type="button" class="fy-pill-apply" data-fy-apply aria-pressed="false">
+            <svg class="fy-check" viewBox="0 0 16 16" aria-hidden="true"><path d="m3 8.5 3 3 7-7" /></svg>
+            <svg class="fy-tape" viewBox="0 0 20 20" aria-hidden="true"><rect x="2" y="6" width="16" height="8" rx="2" /><path d="M6 6v3m3-3v4m3-4v3m3-3v4" /></svg>
+            <span>Fits you</span>
+          </button>
+          <button type="button" class="fy-pill-edit" data-fy-edit aria-haspopup="dialog" aria-label="Manage fit preferences">
+            <svg viewBox="0 0 4 16" aria-hidden="true"><circle cx="2" cy="3" r="1.5" /><circle cx="2" cy="8" r="1.5" /><circle cx="2" cy="13" r="1.5" /></svg>
+          </button>
+        </div>
+        {dropdowns.map((dropdown) => (
+          <button type="button" class="fy-chip" data-fy-dropdown={dropdown.id} aria-expanded="false" aria-controls={`fy-menu-${dropdown.id}`}>
+            {dropdown.label} <svg class="fy-caret" viewBox="0 0 10 6" aria-hidden="true"><path d="m1 1 4 4 4-4" /></svg>
+          </button>
+        ))}
+      </div>
+      </div>
+
+      {[...dropdowns, { id: "all", label: "All filters", options: ["Department", "Pattern", "Closure Type", "Lifestyle"] }].map((dropdown) => (
+        <div class="fy-menu" id={`fy-menu-${dropdown.id}`} data-fy-menu={dropdown.id} hidden>
+          <p class="fy-menu-title">{dropdown.label}</p>
+          {dropdown.options.map((option) => <label><input type="checkbox" /> {option}</label>)}
+          <p class="fy-menu-note">Placeholder filter. Only Fits you changes the results.</p>
+        </div>
+      ))}
+
+      <p class="fy-banner" data-fy-banner hidden>
+        Showing items available in your size, <strong data-fy-banner-size>M</strong>.
+        <button type="button" class="fy-link" data-fy-edit-inline aria-haspopup="dialog">Change size</button>
+      </p>
+      <p class="fy-count" data-fy-count>{products.length} results for "shirts for men"</p>
+
+      <ul class="fy-grid">
+        {products.map((product) => (
+          <li class="fy-card" data-fy-card data-sizes={product.sizes.join(" ")}>
+            <Fragment set:html={shirtSvg({ ...product, view: "front", label: product.title })} />
+            <p class="fy-title">{product.title}</p>
+            <p class="fy-price"><sup>$</sup>{product.price.split(".")[0]}<sup>{product.price.split(".")[1]}</sup></p>
+            <p class="fy-sizes">Sizes: {product.sizes.join(", ")}</p>
+          </li>
+        ))}
+      </ul>
+    </div>
+
+    <div class="fy-scrim" data-fy-scrim hidden></div>
+    <div class="fy-sheet" data-fy-sheet role="dialog" aria-modal="true" aria-labelledby="fy-sheet-title" hidden>
+      <div class="fy-sheet-handle" aria-hidden="true"></div>
+      <div class="fy-sheet-header">
+        <h3 id="fy-sheet-title">Your size</h3>
+        <button type="button" class="fy-close" data-fy-close aria-label="Close">×</button>
+      </div>
+      <div class="fy-profile"><span class="fy-avatar" aria-hidden="true"><svg viewBox="0 0 32 32"><circle cx="16" cy="12" r="6" /><path d="M5 32a11 11 0 0 1 22 0" /></svg></span><span>Your profile</span></div>
+      <hr class="fy-divider" />
+      <p class="fy-size-label" id="fy-size-label">Size that fits you best in tops</p>
+      <p class="fy-size-current">Size: Men / <span data-fy-current>Select a size below</span></p>
+      <div class="fy-tabs" role="tablist" aria-label="Size system">
+        <button type="button" role="tab" aria-selected="true" data-fy-tab="alpha">Alpha</button>
+        <button type="button" role="tab" aria-selected="false" data-fy-tab="numeric">Numeric</button>
+      </div>
+      {Object.entries(sizeSystems).map(([system, options]) => (
+        <div class="fy-sizes-picker" role="radiogroup" aria-labelledby="fy-size-label" data-fy-system={system} hidden={system !== "alpha"}>
+          {options.map(([label, size]) => <button type="button" role="radio" aria-checked="false" tabindex="-1" data-fy-size={size} data-fy-label={label}>{label}</button>)}
+        </div>
+      ))}
+      <button type="button" class="fy-save" data-fy-save disabled>Apply fit preferences</button>
+    </div>
+  </PhoneFrame>
+  <div class="fy-controls">
+    <p class="fy-state" data-fy-state></p>
+    <button type="button" class="fy-reset" data-fy-reset>Try it as a new customer</button>
+  </div>
+  <p class="fy-live" aria-live="polite" data-fy-live></p>
+</div>
+
+<script>
+  const reduceMotion = () => window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+  document.querySelectorAll("[data-fy]").forEach((root) => {
+    const $ = (selector) => root.querySelector(selector);
+    const $$ = (selector) => [...root.querySelectorAll(selector)];
+    const content = $("[data-fy-content]");
+    const sheet = $("[data-fy-sheet]");
+    const scrim = $("[data-fy-scrim]");
+    const save = $("[data-fy-save]");
+    const radios = $$("[data-fy-size]");
+    let lastTrigger = null;
+    let pending = null;
+
+    const announce = (message) => { $("[data-fy-live]").textContent = message; };
+    const visibleRadios = () => radios.filter((radio) => !radio.parentElement.hidden);
+
+    const showSystem = (system) => {
+      $$("[data-fy-tab]").forEach((tab) => tab.setAttribute("aria-selected", String(tab.dataset.fyTab === system)));
+      $$("[data-fy-system]").forEach((group) => { group.hidden = group.dataset.fySystem !== system; });
+      const options = visibleRadios();
+      if (!options.some((option) => option.tabIndex === 0)) options[0].tabIndex = 0;
+    };
+
+    const render = () => {
+      const { state, size, sizeLabel } = root.dataset;
+      const applied = root.dataset.applied === "true";
+      $("[data-fy-apply]").setAttribute("aria-pressed", String(applied));
+      if (state === "cold") $("[data-fy-apply]").setAttribute("aria-haspopup", "dialog");
+      else $("[data-fy-apply]").removeAttribute("aria-haspopup");
+      $("[data-fy-edit]").hidden = state === "cold";
+      $("[data-fy-banner]").hidden = !applied;
+      $("[data-fy-banner-size]").textContent = sizeLabel;
+
+      let visible = 0;
+      $$("[data-fy-card]").forEach((card) => {
+        const fits = card.dataset.sizes.split(" ").includes(size);
+        card.hidden = applied && !fits;
+        if (!card.hidden) visible += 1;
+      });
+      $("[data-fy-count]").textContent = `${visible} results for "shirts for men"`;
+      $("[data-fy-state]").textContent = state === "cold"
+        ? "You're a new customer: we don't know your size yet."
+        : state === "implicit"
+          ? `Returning customer: size ${sizeLabel}, inferred from past orders.`
+          : `Size ${sizeLabel}, saved by you.`;
+      return visible;
+    };
+
+    const selectSize = (radio, focus = true) => {
+      radios.forEach((option) => {
+        const checked = option === radio;
+        option.setAttribute("aria-checked", String(checked));
+        option.tabIndex = checked ? 0 : -1;
+      });
+      pending = { size: radio.dataset.fySize, label: radio.dataset.fyLabel };
+      $("[data-fy-current]").textContent = pending.label;
+      save.disabled = false;
+      if (focus) radio.focus();
+    };
+
+    const closeMenus = () => {
+      $$("[data-fy-menu]").forEach((menu) => { menu.hidden = true; });
+      $$("[data-fy-dropdown]").forEach((chip) => chip.setAttribute("aria-expanded", "false"));
+    };
+
+    const openSheet = (trigger) => {
+      closeMenus();
+      lastTrigger = trigger;
+      const { state, sizeLabel } = root.dataset;
+      radios.forEach((option) => { option.setAttribute("aria-checked", "false"); option.tabIndex = -1; });
+      pending = null;
+      save.disabled = true;
+      save.textContent = "Apply fit preferences";
+      $("[data-fy-current]").textContent = "Select a size below";
+      const current = state === "cold" ? null : radios.find((option) => option.dataset.fyLabel === sizeLabel);
+      showSystem(current?.parentElement.dataset.fySystem ?? "alpha");
+      if (current) selectSize(current, false);
+      const focusTarget = current ?? visibleRadios()[0];
+      focusTarget.tabIndex = 0;
+
+      content.inert = true;
+      scrim.hidden = false;
+      sheet.hidden = false;
+      requestAnimationFrame(() => {
+        root.classList.add("is-sheet-open");
+        focusTarget.focus({ preventScroll: true });
+      });
+    };
+
+    const closeSheet = () => {
+      root.classList.remove("is-sheet-open");
+      content.inert = false;
+      const finish = () => { sheet.hidden = true; scrim.hidden = true; };
+      if (reduceMotion()) finish();
+      else setTimeout(finish, 220);
+      lastTrigger?.focus({ preventScroll: true });
+    };
+
+    root.addEventListener("click", (event) => {
+      const target = event.target;
+      const apply = target.closest("[data-fy-apply]");
+      const dropdown = target.closest("[data-fy-dropdown]");
+      const radio = target.closest("[data-fy-size]");
+
+      if (apply) {
+        if (root.dataset.state === "cold") return openSheet(apply);
+        root.dataset.applied = String(root.dataset.applied !== "true");
+        const visible = render();
+        announce(root.dataset.applied === "true" ? `Fits you applied. ${visible} results in size ${root.dataset.sizeLabel}.` : "Fits you removed.");
+      } else if (target.closest("[data-fy-edit], [data-fy-edit-inline]")) {
+        openSheet(target.closest("[data-fy-edit], [data-fy-edit-inline]"));
+      } else if (target.closest("[data-fy-close]") || target.closest("[data-fy-scrim]")) {
+        closeSheet();
+      } else if (target.closest("[data-fy-tab]")) {
+        showSystem(target.closest("[data-fy-tab]").dataset.fyTab);
+      } else if (radio) {
+        selectSize(radio);
+      } else if (target.closest("[data-fy-save]") && pending) {
+        const { size, label } = pending;
+        save.disabled = true;
+        save.textContent = "Saving…";
+        setTimeout(() => {
+          Object.assign(root.dataset, { state: "explicit", size, sizeLabel: label, applied: "true" });
+          lastTrigger = $("[data-fy-apply]");
+          const visible = render();
+          closeSheet();
+          announce(`Size ${label} saved. ${visible} results fit you.`);
+        }, reduceMotion() ? 0 : 450);
+      } else if (dropdown) {
+        const menu = $(`[data-fy-menu="${dropdown.dataset.fyDropdown}"]`);
+        const opening = menu.hidden;
+        closeMenus();
+        menu.hidden = !opening;
+        dropdown.setAttribute("aria-expanded", String(opening));
+      } else if (target.closest("[data-fy-toggle]")) {
+        const chip = target.closest("[data-fy-toggle]");
+        chip.setAttribute("aria-pressed", String(chip.getAttribute("aria-pressed") !== "true"));
+      } else if (target.closest("[data-fy-reset]")) {
+        Object.assign(root.dataset, { state: "cold", size: "", sizeLabel: "", applied: "false" });
+        render();
+        announce("Demo reset. You're now a new customer without a saved size.");
+      }
+    });
+
+    root.addEventListener("keydown", (event) => {
+      if (event.key === "Escape") {
+        if (!sheet.hidden) closeSheet();
+        else closeMenus();
+        return;
+      }
+      const radio = event.target.closest("[data-fy-size]");
+      if (radio && ["ArrowLeft", "ArrowRight", "ArrowUp", "ArrowDown"].includes(event.key)) {
+        event.preventDefault();
+        const step = event.key === "ArrowLeft" || event.key === "ArrowUp" ? -1 : 1;
+        const options = visibleRadios();
+        selectSize(options[(options.indexOf(radio) + step + options.length) % options.length]);
+      }
+      if (!sheet.hidden && event.key === "Tab") {
+        const focusable = [...sheet.querySelectorAll("button:not([disabled])")].filter((element) => element.tabIndex >= 0 && element.offsetParent !== null);
+        const first = focusable[0];
+        const last = focusable[focusable.length - 1];
+        if (event.shiftKey && document.activeElement === first) { event.preventDefault(); last.focus(); }
+        else if (!event.shiftKey && document.activeElement === last) { event.preventDefault(); first.focus(); }
+      }
+    });
+
+    render();
+  });
+</script>
+
+<style>
+  .fy-demo { width: 100%; }
+  .fy-content { flex: 1; min-height: 0; overflow-y: auto; }
+  .fy-rib-rows { border-bottom: 1px solid #e7e7e7; }
+  .fy-rib { display: flex; gap: 8px; padding: 6px 10px; overflow-x: auto; overscroll-behavior-x: contain; scrollbar-width: none; }
+  .fy-rib + .fy-rib { padding-bottom: 10px; }
+  .fy-chip-filters { padding: 0 9px; }
+  .fy-chip-filters svg { width: 18px; height: 18px; fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; }
+  .fy-rib::-webkit-scrollbar { display: none; }
+  :where(.fy-rib) button { flex: 0 0 auto; font: inherit; color: #0f1111; cursor: pointer; }
+  .fy-tabs button:focus-visible, .fy-rib button:focus-visible, .fy-sheet button:focus-visible, .fy-link:focus-visible, .fy-reset:focus-visible { outline: 2px solid #007185; outline-offset: 2px; }
+  .fy-chip { display: inline-flex; align-items: center; gap: 6px; height: 34px; padding: 0 12px; border: 1px solid #d5d9d9; border-radius: 17px; background: #fff; white-space: nowrap; font-size: 13px; }
+  .fy-chip[aria-pressed="true"], .fy-chip[aria-expanded="true"] { border-color: #007185; background: #edfdff; box-shadow: inset 0 0 0 1px #007185; }
+  .fy-caret { width: 9px; height: 6px; fill: none; stroke: currentColor; stroke-width: 1.6; }
+  .fy-pill { flex: 0 0 auto; display: inline-flex; height: 34px; border: 1px solid #d5d9d9; border-radius: 17px; background: #fff; overflow: hidden; }
+  .fy-pill-apply { display: inline-flex; align-items: center; gap: 6px; padding: 0 10px 0 12px; border: 0; background: transparent; font-size: 13px; font-weight: 700; }
+  .fy-pill-edit { width: 30px; padding: 0; border: 0; border-left: 1px solid #d5d9d9; background: transparent; }
+  .fy-pill-edit svg { width: 4px; height: 14px; fill: #0f1111; }
+  .fy-pill-edit[hidden] { display: none; }
+  .fy-tape { width: 18px; height: 18px; fill: none; stroke: #007185; stroke-width: 1.5; }
+  .fy-check { display: none; width: 14px; height: 14px; fill: none; stroke: #fff; stroke-width: 2.2; stroke-linecap: round; stroke-linejoin: round; }
+  .fy-demo[data-applied="true"] .fy-pill { border-color: #007185; background: #007185; color: #fff; }
+  .fy-demo[data-applied="true"] .fy-pill button { color: #fff; }
+  .fy-demo[data-applied="true"] .fy-pill-edit { border-left-color: #ffffff66; }
+  .fy-demo[data-applied="true"] .fy-pill-edit svg { fill: #fff; }
+  .fy-demo[data-applied="true"] .fy-check { display: block; }
+  .fy-demo[data-applied="true"] .fy-tape { display: none; }
+  .fy-menu { margin: 0; padding: 10px 14px 12px; border-bottom: 1px solid #e7e7e7; background: #fafafa; font-size: 13px; }
+  .fy-menu[hidden] { display: none; }
+  .fy-menu label { display: flex; align-items: center; gap: 8px; padding: 5px 0; }
+  .fy-menu input { width: 16px; height: 16px; accent-color: #007185; }
+  .fy-menu-title { margin: 0 0 4px; font-weight: 700; }
+  .fy-menu-note { margin: 6px 0 0; color: #565959; font-size: 11px; }
+  .fy-banner { margin: 8px 10px 0; padding: 8px 10px; border-left: 3px solid #007185; border-radius: 4px; background: #edfdff; font-size: 12px; }
+  .fy-banner[hidden] { display: none; }
+  .fy-link { padding: 0; border: 0; background: none; color: #007185; font: inherit; cursor: pointer; }
+  .fy-count { margin: 8px 12px; color: #565959; font-size: 12px; }
+  .fy-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px 8px; margin: 0; padding: 0 8px 20px; list-style: none; }
+  .fy-card[hidden] { display: none; }
+  .fy-card :global(svg) { display: block; width: 100%; height: auto; border-radius: 4px; }
+  .fy-title { margin: 6px 0 2px; font-size: 13px; line-height: 1.3; }
+  .fy-price { margin: 0; font-size: 18px; line-height: 1; }
+  .fy-price sup { position: relative; top: 2px; font-size: 10px; vertical-align: top; }
+  .fy-sizes { margin: 4px 0 0; color: #565959; font-size: 11px; }
+  .fy-scrim { position: absolute; inset: 0; background: #0f1111; opacity: 0; transition: opacity .2s ease; }
+  .fy-sheet { position: absolute; left: 0; right: 0; bottom: 0; display: flex; flex-direction: column; height: min(512px, 85%); padding: 8px 18px 18px; border-radius: 16px 16px 0 0; background: #fff; box-shadow: 0 -4px 20px #0003; transform: translateY(100%); transition: transform .22s ease-out; }
+  .fy-scrim[hidden], .fy-sheet[hidden] { display: none; }
+  .fy-demo.is-sheet-open .fy-scrim { opacity: .45; }
+  .fy-demo.is-sheet-open .fy-sheet { transform: translateY(0); }
+  .fy-sheet-handle { width: 40px; height: 4px; margin: 0 auto 10px; border-radius: 2px; background: #d5d9d9; }
+  .fy-sheet-header { display: flex; align-items: center; justify-content: space-between; }
+  .fy-sheet-header h3 { margin: 0; font-size: 18px; }
+  .fy-close { width: 32px; height: 32px; padding: 0; border: 0; border-radius: 50%; background: #f0f2f2; color: #0f1111; font: 22px/1 Arial, sans-serif; cursor: pointer; }
+  .fy-profile { display: flex; align-items: center; gap: 10px; margin-top: 12px; font-size: 14px; font-weight: 700; }
+  .fy-avatar { display: grid; place-items: center; width: 34px; height: 34px; overflow: hidden; border-radius: 50%; background: #2a9bd3; }
+  .fy-avatar svg { width: 34px; height: 34px; fill: #e6f3fa; }
+  .fy-divider { margin: 22px 0; border: 0; border-top: 1px solid #e7e7e7; }
+  .fy-size-label { margin: 0 0 2px; font-size: 14px; font-weight: 700; }
+  .fy-size-current { margin: 0 0 14px; font-size: 14px; }
+  .fy-tabs { display: flex; border-bottom: 1px solid #d5d9d9; }
+  .fy-tabs button { flex: 1; padding: 8px 0; border: 0; border-bottom: 3px solid transparent; background: none; color: #565959; font: 14px "Amazon Ember", Arial, sans-serif; cursor: pointer; }
+  .fy-tabs button[aria-selected="true"] { border-bottom-color: #007185; color: #0f1111; font-weight: 700; }
+  .fy-sizes-picker { display: flex; flex-wrap: wrap; gap: 10px; padding: 10px 0 10px 2px; }
+  .fy-sizes-picker[hidden] { display: none; }
+  .fy-sizes-picker button { min-width: 42px; min-height: 42px; padding: 0 4px; border: 1px solid #d5d9d9; border-radius: 8px; background: #fff; box-shadow: 0 2px 5px rgb(213 217 217 / 50%); color: #0f1111; font: 14px "Amazon Ember", Arial, sans-serif; cursor: pointer; }
+  .fy-sizes-picker button[aria-checked="true"] { border-color: #007185; background: #edfdff; box-shadow: inset 0 0 0 1px #007185; }
+  .fy-save { display: block; width: calc(100% - 40px); height: 42px; margin: auto 20px 0; border: 1px solid #fcd200; border-radius: 10px; background: #ffd814; color: #0f1111; font: 14px "Amazon Ember", Arial, sans-serif; cursor: pointer; }
+  .fy-save:disabled { border-color: #d5d9d9; background: #f0f2f2; color: #8d9096; cursor: not-allowed; }
+  .fy-controls { display: flex; flex-wrap: wrap; align-items: center; justify-content: center; gap: 6px 16px; margin-top: 16px; text-align: center; }
+  .fy-state { margin: 0; color: var(--muted, #66685f); font-size: 13px; }
+  .fy-reset { padding: 0 0 3px; border: 0; border-bottom: 1px solid var(--accent, #a4513f); background: none; color: var(--ink, #20221f); font: 13px var(--sans, sans-serif); cursor: pointer; }
+  .fy-live { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
+  @media (prefers-reduced-motion: reduce) { .fy-scrim, .fy-sheet { transition: none; } }
+</style>

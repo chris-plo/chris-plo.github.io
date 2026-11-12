@@ -1,0 +1,68 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import CartDemo from "../components/CartDemo.astro";
+import MediaGalleryDemo from "../components/MediaGalleryDemo.astro";
+import FitsYouDemo from "../components/FitsYouDemo.astro";
+---
+<BaseLayout
+  title="Work: customer-facing features at Amazon"
+  noindex
+  description="Interactive recreations of Amazon search features Chris Plössl helped build: Add to Cart from search, swipeable product images on mobile, and the Fits you size filter."
+>
+  <section class="page-heading">
+    <span class="eyebrow">Work</span>
+    <h1>Features customers can touch.</h1>
+    <p class="lede">A few customer-facing features I helped build for Amazon search. The demos are simplified recreations I wrote for this page, with made-up products. They don't use Amazon code, data or services.</p>
+  </section>
+
+  <section class="section case" id="fits-you" aria-labelledby="fits-you-heading">
+    <div class="case-demo"><FitsYouDemo /></div>
+    <div class="case-copy">
+      <span class="eyebrow">01 / Personalised filters</span>
+      <h2 id="fits-you-heading">Fits you.</h2>
+      <p>Shopping for clothes in search has a quiet problem: many results aren't available in your size, and you only find out on the product page. Fits you is a filter in the search refinement bar that shows only products available in your size, based on what you've bought before.</p>
+      <p>The next iteration turned it into a pill with two actions. Tap it to apply the filter, or open a bottom sheet to check or change your size. That opened the feature to customers we knew nothing about yet: a new customer saves a size once and gets the filter from then on.</p>
+      <p>I worked on deciding when the pill shows and for whom, the business rules behind it, and on reviews, testing and launch support across marketplaces.</p>
+      <p class="case-try">Try it: tap <strong>Fits you</strong>, open the <strong>⋮</strong> menu to change your size, then try it as a new customer.</p>
+    </div>
+  </section>
+
+  <section class="section case" id="media-gallery" aria-labelledby="media-gallery-heading">
+    <div class="case-demo"><MediaGalleryDemo /></div>
+    <div class="case-copy">
+      <span class="eyebrow">02 / Mobile search</span>
+      <h2 id="media-gallery-heading">Swipeable images.</h2>
+      <p>On a phone, a search result used to show one image per product. To see the back of a shirt or a close-up of the fabric, you had to open the product page and come back.</p>
+      <p>Media gallery for mobile lets customers swipe through a product's images right in the search results. An earlier attempt had not worked out, so this needed a fresh approach. It was my first design at Amazon, and I focused on a lightweight solution that would not slow the page down.</p>
+      <p>I had never written frontend JavaScript before this project. I implemented it and coordinated engineers from partner teams who contributed to it.</p>
+      <p class="case-try">Try it: swipe or drag an image, use the dots, or focus an image and use the arrow keys.</p>
+    </div>
+  </section>
+
+  <section class="section case" id="add-to-cart" aria-labelledby="add-to-cart-heading">
+    <div class="case-demo case-demo-cart"><CartDemo /></div>
+    <div class="case-copy">
+      <span class="eyebrow">03 / A small change, at scale</span>
+      <h2 id="add-to-cart-heading">Add to cart from search.</h2>
+      <p>In 2023, I worked on the first version of Amazon's search-page Add to Cart button. Before it launched, customers had to open a product page to add an item to their cart, even for something as simple as a pen.</p>
+      <p>Supporting the range of products behind it was the hard part: packs, order limits, items priced by weight or needing personalisation. I implemented parts of the backend and the frontend JavaScript, and helped with QA and on-call as it reached customers.</p>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .case { display: grid; grid-template-columns: minmax(300px, 380px) minmax(0, 1fr); gap: clamp(32px, 6vw, 80px); align-items: start; }
+  .case:nth-of-type(even) .case-demo { order: 2; }
+  .case-demo-cart { display: grid; place-items: center; min-height: 160px; padding: 32px; background: var(--accent-soft); }
+  .case-demo-cart :global(.cart-demo) { margin: 0; }
+  .case-copy { max-width: 600px; }
+  .case-copy h2 { margin: 12px 0 18px; font: 500 clamp(34px, 5vw, 48px)/1.05 var(--serif); letter-spacing: -.03em; }
+  .case-copy p { color: var(--muted); font-size: 16px; line-height: 1.8; margin: 0 0 16px; }
+  .case-copy .case-try { padding-left: 16px; border-left: 2px solid var(--accent); font-size: 14px; }
+  .case-try strong { color: var(--ink); }
+  @media (max-width: 860px) {
+    .case { grid-template-columns: 1fr; }
+    .case:nth-of-type(even) .case-demo { order: 0; }
+    .case-copy { order: -1; }
+  }
+</style>

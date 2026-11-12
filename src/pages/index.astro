@@ -2,6 +2,7 @@
 import BaseLayout from "../layouts/BaseLayout.astro";
 import { getCollection } from "astro:content";
 import ThumbHashImage from "../components/ThumbHashImage.astro";
+import CartDemo from "../components/CartDemo.astro";
 import { thumbhashes } from "../data/thumbhashes";
 import workPortrait from "../assets/professional/chris-plossl-professional-portrait.jpg";
 import workPortraitTwo from "../assets/professional/chris-plossl-at-work.jpg";
@@ -82,7 +83,7 @@ const latestJournalEntries = (await getCollection("journal"))
 
   <section class="section" id="case-study" aria-labelledby="case-study-heading">
     <div class="feature-band">
-      <div class="case-study-heading"><span class="eyebrow">03 / A small change, at scale</span><h2 id="case-study-heading">Add to cart from search.</h2><div class="cart-demo" data-cart-demo><button class="add-to-cart-demo" type="button" data-cart-add aria-label="Add to basket">Add to cart</button><div class="cart-stepper" data-cart-stepper role="group" aria-label="Basket quantity" hidden><button class="cart-stepper-action" type="button" data-cart-decrease aria-label="Remove from basket"><svg class="cart-remove-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 6h18M8 6V4h8v2m-9 0 1 14h8l1-14M10 10v6m4-6v6" /></svg><span class="cart-minus-icon" aria-hidden="true">−</span></button><span class="cart-quantity" data-cart-count aria-live="polite">1 in cart</span><button class="cart-stepper-action" type="button" data-cart-increase aria-label="Add one more">+</button></div></div></div>
+      <div class="case-study-heading"><span class="eyebrow">03 / A small change, at scale</span><h2 id="case-study-heading">Add to cart from search.</h2><CartDemo /></div>
       <div>
         <p>In 2023, I worked on the first version of Amazon’s search-page Add to Cart button. Before it launched, customers had to open a product page to add an item to their cart—even for something as simple as a pen or an apple.</p>
         <p>The button looks simple. Supporting the range of products behind it was not: some items are sold in packs, have order limits, are priced by weight, or need personalisation. I implemented parts of the backend and the frontend JavaScript, and helped with QA and on-call monitoring as the feature reached customers. The launch was a strong success in customer metrics.</p>

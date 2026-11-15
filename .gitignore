@@ -2,4 +2,5 @@ node_modules/
 .pnpm-store/
 dist/
 .astro/
+.newsletter-preview.html
 .DS_Store

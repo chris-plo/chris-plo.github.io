@@ -1,0 +1,30 @@
+import BaseLayout from "../layouts/BaseLayout.astro";
+---
+<BaseLayout title="Privacy" description="How this website handles newsletter subscriptions and personal information.">
+  <section class="page-heading">
+    <span class="eyebrow">Privacy</span>
+    <h1>Your email, used with care.</h1>
+    <p class="lede">This policy explains how the newsletter on Ideas Are Better When They Travel handles your information.</p>
+  </section>
+
+  <article class="prose privacy-page">
+    <h2>Newsletter subscriptions</h2>
+    <p>If you subscribe, your email address and the consent and subscription status needed to manage your request are processed to send occasional digests of new articles from this journal. The newsletter does not include unrelated promotions.</p>
+    <p>Subscriptions use Sender (sender.net), which hosts the signup form and manages the subscriber list and email delivery. After you submit the form, Sender sends a confirmation email. You are not an active subscriber until you confirm. Sender may also process technical information needed to render and submit its form; the form is configured without Sender attribution tracking where supported. If Google reCAPTCHA is enabled on the form, Google analyzes interaction data to distinguish people from bots and may set its reCAPTCHA cookie. See <a href="https://policies.google.com/privacy" rel="noreferrer">Google’s Privacy Policy</a> and <a href="https://policies.google.com/terms" rel="noreferrer">Terms of Service</a>.</p>
+
+    <h2>Your choices</h2>
+    <p>You can unsubscribe using the link included in every digest. You can also contact me to request access to or deletion of your subscription data. Withdrawing consent does not affect processing that took place before withdrawal.</p>
+
+    <h2>Provider information</h2>
+    <p>Sender’s privacy information is available at <a href="https://www.sender.net/privacy-policy/" rel="noreferrer">sender.net/privacy-policy</a>. Sender processes subscriber information on behalf of the site publisher for this newsletter. Before activation, the account’s data-processing agreement and settings should be reviewed for the applicable processing terms, subprocessors, retention, and any international transfers.</p>
+
+    <h2>Contact</h2>
+    <p>For a privacy request about this site’s newsletter, email <a href="mailto:christoph.ploessl@gmail.com">christoph.ploessl@gmail.com</a>.</p>
+  </article>
+</BaseLayout>
+
+<style>
+  .privacy-page { margin-bottom: 50px; }
+  .privacy-page h2:first-child { margin-top: 0; }
+  .privacy-page a { color: var(--accent); text-decoration: underline; text-underline-offset: 3px; }
+</style>

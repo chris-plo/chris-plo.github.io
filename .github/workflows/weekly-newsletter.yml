@@ -1,0 +1,119 @@
+name: Weekly journal digest
+
+on:
+  # 08:00 UTC is 09:00 in Madrid during CET and 10:00 during CEST.
+  # GitHub cron is UTC-only; this keeps the winter run at the requested local hour.
+  schedule:
+    - cron: "0 8 * * 1"
+  workflow_dispatch:
+    inputs:
+      mode:
+        description: Preview the digest, or send it after live sending is enabled in repository variables.
+        type: choice
+        options:
+          - preview
+          - send
+        default: preview
+        required: true
+
+permissions:
+  contents: write
+
+concurrency:
+  group: weekly-newsletter-state
+  cancel-in-progress: false
+
+jobs:
+  digest:
+    if: github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out main
+        uses: actions/checkout@v4
+        with:
+          ref: main
+
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: Select safe run mode
+        id: mode
+        shell: bash
+        env:
+          EVENT_NAME: ${{ github.event_name }}
+          INPUT_MODE: ${{ inputs.mode }}
+          LIVE_SEND_ENABLED: ${{ vars.NEWSLETTER_LIVE_SEND }}
+        run: |
+          mode=preview
+          if [[ "$EVENT_NAME" == "schedule" && "$LIVE_SEND_ENABLED" == "true" ]]; then
+            mode=send
+          elif [[ "$EVENT_NAME" == "workflow_dispatch" && "$INPUT_MODE" == "send" ]]; then
+            if [[ "$LIVE_SEND_ENABLED" != "true" ]]; then
+              echo "Live sending is disabled. Set the repository variable NEWSLETTER_LIVE_SEND=true only after the Sender setup and preview are approved." >&2
+              exit 1
+            fi
+            mode=send
+          fi
+          echo "mode=$mode" >> "$GITHUB_OUTPUT"
+          echo "Newsletter run mode: $mode"
+
+      - name: Prepare campaign or render preview
+        id: prepare
+        run: node scripts/newsletter-digest.mjs prepare
+        env:
+          NEWSLETTER_MODE: ${{ steps.mode.outputs.mode }}
+          NEWSLETTER_RSS_URL: https://chrisplo.dev/rss.xml
+          NEWSLETTER_STATE_PATH: newsletter/state.json
+          NEWSLETTER_PREVIEW_PATH: ${{ runner.temp }}/newsletter-preview.html
+          SENDER_API_TOKEN: ${{ steps.mode.outputs.mode == 'send' && secrets.SENDER_API_TOKEN || '' }}
+          SENDER_GROUP_ID: ${{ vars.SENDER_GROUP_ID }}
+          SENDER_FROM_NAME: ${{ vars.SENDER_FROM_NAME }}
+          SENDER_REPLY_TO: ${{ vars.SENDER_REPLY_TO }}
+
+      - name: Persist pending campaign before sending
+        if: steps.mode.outputs.mode == 'send' && steps.prepare.outputs.action == 'pending'
+        shell: bash
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add newsletter/state.json
+          if git diff --cached --quiet; then
+            echo "Pending campaign state is already committed."
+          else
+            git commit -m "chore: record pending newsletter campaign"
+            git push origin HEAD:main
+          fi
+
+      - name: Send or safely recover pending campaign
+        id: send
+        if: steps.mode.outputs.mode == 'send' && steps.prepare.outputs.action == 'pending'
+        run: node scripts/newsletter-digest.mjs send-pending
+        env:
+          NEWSLETTER_STATE_PATH: newsletter/state.json
+          SENDER_API_TOKEN: ${{ secrets.SENDER_API_TOKEN }}
+          SENDER_GROUP_ID: ${{ vars.SENDER_GROUP_ID }}
+
+      - name: Persist successful digest state
+        if: steps.send.outputs.action == 'sent'
+        shell: bash
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add newsletter/state.json
+          if git diff --cached --quiet; then
+            echo "Digest state was already recorded."
+          else
+            git commit -m "chore: record successful newsletter digest"
+            git push origin HEAD:main
+          fi
+
+      - name: Upload digest preview
+        if: steps.mode.outputs.mode == 'preview' && steps.prepare.outputs.action == 'preview'
+        uses: actions/upload-artifact@v4
+        with:
+          name: weekly-newsletter-preview
+          path: ${{ runner.temp }}/newsletter-preview.html
+          if-no-files-found: error
+          retention-days: 7

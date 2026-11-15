@@ -9,7 +9,9 @@
     "predev": "node scripts/generate-thumbhashes.mjs",
     "prebuild": "node scripts/generate-thumbhashes.mjs",
     "build": "astro build",
-    "preview": "astro preview"
+    "test:newsletter": "node --test tests/newsletter-digest.test.mjs",
+    "preview": "astro preview",
+    "newsletter:preview": "node scripts/newsletter-digest.mjs preview"
   },
   "dependencies": {
     "@astrojs/rss": "4.0.19",

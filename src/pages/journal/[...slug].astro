@@ -5,6 +5,7 @@ import AudioPlayer from "../../components/AudioPlayer.astro";
 import { toAudioEdition, withBase } from "../../lib/audio";
 import BaseLayout from "../../layouts/BaseLayout.astro";
 import { getJournalTopicLabel } from "../../data/journalTopics";
+import NewsletterSignup from "../../components/NewsletterSignup.astro";
 import { getJournalImage } from "../../lib/journal-images";
 import { Picture } from "astro:assets";
 
@@ -30,6 +31,7 @@ const cover = entry.data.cover ? getJournalImage(entry.data.cover) : undefined;
   tags={entry.data.tags}
   image={cover}
   imageAlt={entry.data.coverAlt ?? entry.data.title}
+  includeSender
 >
   <article class="article-page">
     <header class="page-heading">
@@ -46,4 +48,11 @@ const cover = entry.data.cover ? getJournalImage(entry.data.cover) : undefined;
     {cover && <Picture class="article-cover" src={cover} formats={["avif", "webp"]} widths={[640, 960, 1280, 1600]} sizes="(min-width: 1100px) 1100px, 100vw" alt={entry.data.coverAlt ?? ""} loading="eager" fetchpriority="high" />}
     <div class="prose article-content"><Content /></div>
   </article>
+  <div class="article-newsletter">
+    <NewsletterSignup />
+  </div>
 </BaseLayout>
+
+<style>
+  .article-newsletter { max-width: 1000px; margin: 0 auto 90px; }
+</style>

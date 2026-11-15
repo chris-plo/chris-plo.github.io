@@ -35,6 +35,9 @@ jobs:
         run: pnpm install --frozen-lockfile
       - name: Build
         run: pnpm build
+        env:
+          PUBLIC_SENDER_ACCOUNT_ID: ${{ vars.SENDER_PUBLIC_ACCOUNT_ID }}
+          PUBLIC_SENDER_FORM_ID: ${{ vars.SENDER_FORM_ID }}
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:

@@ -6,6 +6,7 @@ import CartDemo from "../components/CartDemo.astro";
 import { thumbhashes } from "../data/thumbhashes";
 import workPortrait from "../assets/professional/chris-plossl-professional-portrait.jpg";
 import workPortraitTwo from "../assets/professional/chris-plossl-at-work.jpg";
+import NewsletterSignup from "../components/NewsletterSignup.astro";
 
 const latestJournalEntries = (await getCollection("journal"))
   .filter((entry) => !entry.data.draft)
@@ -13,6 +14,7 @@ const latestJournalEntries = (await getCollection("journal"))
   .slice(0, 5);
 ---
 <BaseLayout
+  includeSender
   description="Chris Plössl (Ploessl), Senior Software Development Engineer at Amazon in Madrid. Writing on software engineering, search, AI and technical leadership."
 >
   <section class="hero">
@@ -135,6 +137,10 @@ const latestJournalEntries = (await getCollection("journal"))
     ) : (
       <p class="empty-state">The journal is getting started. New writing will appear here when it’s ready.</p>
     )}
+  </section>
+
+  <section class="section" aria-label="Article email updates">
+    <NewsletterSignup />
   </section>
 
   <section class="section" id="mentoring" aria-labelledby="mentoring-heading">

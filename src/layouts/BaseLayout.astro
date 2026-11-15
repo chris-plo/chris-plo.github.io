@@ -5,6 +5,7 @@ import "../styles/global.css";
 import thumbhashDecoder from "../data/thumbhash-decoder.js?raw";
 import { getImage } from "astro:assets";
 import socialImageSource from "../assets/professional/chris-plossl-at-work.jpg";
+import { senderAccountId, senderEmbedReady } from "../lib/sender";
 
 const SITE_NAME = "Christoph Ploessl";
 const {
@@ -16,6 +17,7 @@ const {
   tags = [],
   image,
   imageAlt = "Portrait of Christoph Plössl",
+  includeSender = false,
   noindex = false
 } = Astro.props;
 const fullTitle = title
@@ -147,6 +149,7 @@ const structuredData = type === "article"
     {tags.map((tag) => <meta property="article:tag" content={tag} />)}
     <title>{fullTitle}</title>
     <script is:inline type="application/ld+json" set:html={JSON.stringify(structuredData)}></script>
+    {includeSender && senderEmbedReady && <script is:inline set:html={`(function (s, e, n, d, er) { s['Sender'] = er; s[er] = s[er] || function () { (s[er].q = s[er].q || []).push(arguments) }, s[er].l = 1 * new Date(); s[er].on = function (event, callback) { s[er].listeners = s[er].listeners || {}; (s[er].listeners[event] = s[er].listeners[event] || []).push(callback) }; var a = e.createElement(n), m = e.getElementsByTagName(n)[0]; a.async = 1; a.src = d; m.parentNode.insertBefore(a, m) })(window, document, 'script', 'https://cdn.sender.net/accounts_resources/universal.js', 'sender'); sender(${JSON.stringify(senderAccountId)}, { disableAttribution: true });`}></script>}
     <script is:inline set:html={`${thumbhashDecoder}
       const thumbhashSelector = "img[data-thumbhash][data-src]";
       const thumbhashToExactRatioDataURL = (hash, width, height) => {

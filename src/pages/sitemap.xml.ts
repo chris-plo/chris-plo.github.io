@@ -5,7 +5,7 @@ const site = "https://chrisplo.dev";
 export async function GET() {
   const entries = (await getCollection("journal")).filter(({ data }) => !data.draft);
   const topics = [...new Set(entries.flatMap(({ data }) => data.tags))];
-  const staticUrls = ["/", "/journal/", "/personal/"].map(
+  const staticUrls = ["/", "/journal/", "/personal/", "/privacy/"].map(
     (path) => `  <url><loc>${new URL(path, site)}</loc></url>`
   );
   const journalUrls = entries.map(

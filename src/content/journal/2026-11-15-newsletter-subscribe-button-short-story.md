@@ -9,6 +9,7 @@ updated: 2026-11-15
 tags:
   - software-engineering
 cover: /images/journal/geminigeneratedimagea62feaa62feaa62f.jpg
+audio: /audio/2026-11-15-newsletter-subscribe-button-short-story.mp3
 ---
 # A Newsletter Needs More Than a Subscribe Button
 

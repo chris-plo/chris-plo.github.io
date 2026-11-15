@@ -1,17 +1,11 @@
 {
   "version": 1,
   "initialBaselineAt": null,
-  "lastSuccessfulDigestAt": null,
-  "processedArticleUrls": [],
-  "lastCampaignId": null,
-  "pendingCampaign": {
-    "id": "v2jk0m",
-    "groupId": "dwAx7m",
-    "articleUrls": [
-      "https://chrisplo.dev/journal/2026-11-08-ideas-are-better-when-they-travel/",
-      "https://chrisplo.dev/journal/2026-11-02-curiousity-way-of-thinking/"
-    ],
-    "newestPublishedAt": "2026-11-08T00:00:00.000Z",
-    "createdAt": "2026-11-15T18:06:28.273Z"
-  }
+  "lastSuccessfulDigestAt": "2026-11-15T18:06:30.270Z",
+  "processedArticleUrls": [
+    "https://chrisplo.dev/journal/2026-11-08-ideas-are-better-when-they-travel/",
+    "https://chrisplo.dev/journal/2026-11-02-curiousity-way-of-thinking/"
+  ],
+  "lastCampaignId": "v2jk0m",
+  "pendingCampaign": null
 }

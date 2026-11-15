@@ -122,6 +122,8 @@ main { min-height: 65vh; }
 .current-list { display: grid; grid-template-columns: repeat(3, 1fr); gap: 26px; margin: 0 0 4px; padding: 0; list-style: none; }
 .current-list li { margin: 0; padding: 18px 0 0; border-top: 2px solid var(--accent); }
 .journal-preview { padding-bottom: 82px; }
+.journal-preview-links { display: flex; flex-wrap: wrap; gap: 0 20px; align-items: flex-start; }
+.journal-preview-links .text-link { margin-top: 16px; }
 .journal-preview > .lede { margin-bottom: 34px; }
 .home-post-list { border-top: 1px solid var(--line); }
 .home-post { display: grid; grid-template-columns: 130px 1fr; gap: 30px; padding: 22px 0; border-bottom: 1px solid var(--line); }

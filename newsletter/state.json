@@ -7,5 +7,13 @@
     "https://chrisplo.dev/journal/2026-11-02-curiousity-way-of-thinking/"
   ],
   "lastCampaignId": "v2jk0m",
-  "pendingCampaign": null
+  "pendingCampaign": {
+    "id": "zpnw4y",
+    "groupId": "dwAx7m",
+    "articleUrls": [
+      "https://chrisplo.dev/journal/2026-11-15-newsletter-subscribe-button-short-story/"
+    ],
+    "newestPublishedAt": "2026-11-15T00:00:00.000Z",
+    "createdAt": "2026-11-16T17:50:13.281Z"
+  }
 }

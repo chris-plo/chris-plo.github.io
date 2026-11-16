@@ -1,19 +1,12 @@
 {
   "version": 1,
   "initialBaselineAt": null,
-  "lastSuccessfulDigestAt": "2026-11-15T18:06:30.270Z",
+  "lastSuccessfulDigestAt": "2026-11-16T17:50:15.339Z",
   "processedArticleUrls": [
     "https://chrisplo.dev/journal/2026-11-08-ideas-are-better-when-they-travel/",
-    "https://chrisplo.dev/journal/2026-11-02-curiousity-way-of-thinking/"
+    "https://chrisplo.dev/journal/2026-11-02-curiousity-way-of-thinking/",
+    "https://chrisplo.dev/journal/2026-11-15-newsletter-subscribe-button-short-story/"
   ],
-  "lastCampaignId": "v2jk0m",
-  "pendingCampaign": {
-    "id": "zpnw4y",
-    "groupId": "dwAx7m",
-    "articleUrls": [
-      "https://chrisplo.dev/journal/2026-11-15-newsletter-subscribe-button-short-story/"
-    ],
-    "newestPublishedAt": "2026-11-15T00:00:00.000Z",
-    "createdAt": "2026-11-16T17:50:13.281Z"
-  }
+  "lastCampaignId": "zpnw4y",
+  "pendingCampaign": null
 }

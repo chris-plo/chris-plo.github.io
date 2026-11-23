@@ -8,5 +8,13 @@
     "https://chrisplo.dev/journal/2026-11-15-newsletter-subscribe-button-short-story/"
   ],
   "lastCampaignId": "zpnw4y",
-  "pendingCampaign": null
+  "pendingCampaign": {
+    "id": "L9PLmW",
+    "groupId": "dwAx7m",
+    "articleUrls": [
+      "https://chrisplo.dev/journal/2926-11-23-somewhere-between-here-and-cancun/"
+    ],
+    "newestPublishedAt": "2026-11-23T00:00:00.000Z",
+    "createdAt": "2026-11-23T19:45:33.810Z"
+  }
 }

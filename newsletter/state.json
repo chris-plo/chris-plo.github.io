@@ -1,20 +1,13 @@
 {
   "version": 1,
   "initialBaselineAt": null,
-  "lastSuccessfulDigestAt": "2026-11-16T17:50:15.339Z",
+  "lastSuccessfulDigestAt": "2026-11-23T19:45:35.993Z",
   "processedArticleUrls": [
     "https://chrisplo.dev/journal/2026-11-08-ideas-are-better-when-they-travel/",
     "https://chrisplo.dev/journal/2026-11-02-curiousity-way-of-thinking/",
-    "https://chrisplo.dev/journal/2026-11-15-newsletter-subscribe-button-short-story/"
+    "https://chrisplo.dev/journal/2026-11-15-newsletter-subscribe-button-short-story/",
+    "https://chrisplo.dev/journal/2926-11-23-somewhere-between-here-and-cancun/"
   ],
-  "lastCampaignId": "zpnw4y",
-  "pendingCampaign": {
-    "id": "L9PLmW",
-    "groupId": "dwAx7m",
-    "articleUrls": [
-      "https://chrisplo.dev/journal/2926-11-23-somewhere-between-here-and-cancun/"
-    ],
-    "newestPublishedAt": "2026-11-23T00:00:00.000Z",
-    "createdAt": "2026-11-23T19:45:33.810Z"
-  }
+  "lastCampaignId": "L9PLmW",
+  "pendingCampaign": null
 }
